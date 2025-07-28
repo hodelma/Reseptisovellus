@@ -12,7 +12,7 @@ def add_recipe():
     return render_template("add_recipe.html")
 
 @app.route("/added_recipes")
-def add_recipe():
+def added_recipes():
     recipe = request.form["recipe"]
     return render_template("/added_recipes.html",recipe=recipe)
 
