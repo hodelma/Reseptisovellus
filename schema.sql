@@ -21,13 +21,21 @@ CREATE TABLE diets (
     title TEXT UNIQUE 
 );
 
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    recipe_id INTEGER REFERENCES recipes,
+    comment_text TEXT,
+    rating INTEGER
+);
+
 CREATE TABLE connect_recipe_diets (
-    recipe_id INTEGER
-    diet_id INTEGER
+    recipe_id INTEGER REFERENCES recipes,
+    diet_id INTEGER REFERENCES diets
 );
 
 CREATE TABLE connect_recipe_types (
-    recipe_id INTEGER
-    type_id INTEGER
+    recipe_id INTEGER REFERENCES recipes,
+    type_id INTEGER REFERENCES types
 );
 
