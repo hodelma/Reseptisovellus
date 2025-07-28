@@ -7,7 +7,14 @@
 
 <body>
   <p>List of recipes:</p>
-  <p>{{ recipe }}</p>
+  <p>
+    <ul>
+      {% for recipe in recipes %}
+      {{ recipe }}
+      {% endfor %}
+    </ul>
+
+  </p>
 </body>
 
 </html>

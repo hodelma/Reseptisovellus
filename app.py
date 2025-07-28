@@ -13,8 +13,9 @@ def add_recipe():
 
 @app.route("/added_recipes", methods=["POST"])
 def added_recipes():
+    recipes = request.form.getlist("recipe")
     recipe = request.form["recipe"]
-    return render_template("/added_recipes.html",recipe=recipe)
+    return render_template("/added_recipes.html",recipe=recipe, recipes=recipes)
 
 
 
