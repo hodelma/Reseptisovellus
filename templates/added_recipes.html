@@ -11,12 +11,15 @@
 
   <p>Recipe bank</p>
 
+  {% if recipes %}
+
   {% for recipe in recipes %}
     <div>
       <div>
         <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
       </div>
       <br>
+
       <div>
         <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
 
@@ -24,7 +27,13 @@
       </div>
       <hr>
     </div>
+
   {% endfor %}
+
+  {% else %}
+    <p>No added recipes yet.</p>
+
+  {% endif %}
 
 </body>
 </html>
