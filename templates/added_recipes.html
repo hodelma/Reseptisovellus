@@ -7,14 +7,10 @@
 
 <body>
   <p>List of recipes:</p>
-  <p>
-    <ul>
-      {% for recipe in recipes %}
-      {{ recipe }}
-      {% endfor %}
-    </ul>
+    {% for recipe in recipes %}
+      <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
+      <hr>
+    {% endfor %}
 
-  </p>
 </body>
-
 </html>

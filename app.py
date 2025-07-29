@@ -1,8 +1,9 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect
 import sqlite3
 
 import db
+import all_recipes
 
 app = Flask(__name__)
 
@@ -10,15 +11,19 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/add_recipe")
+@app.route("/add_recipe", methods=["GET", "POST"])
 def add_recipe():
+    if request.method == "POST":
+        recipe_info = request.form.get("recipe")
+        title = request.form.get("title")
+        all_recipes.add_recipe(title, recipe_info)
+        return redirect("/added_recipes")
     return render_template("add_recipe.html")
 
-@app.route("/added_recipes", methods=["POST"])
+@app.route("/added_recipes", methods=["GET", "POST"])
 def added_recipes():
-    recipes = request.form.getlist("recipe")
-    recipe = request.form["recipe"]
-    return render_template("/added_recipes.html",recipe=recipe, recipes=recipes)
+    recipes = all_recipes.get_recipes()
+    return render_template("added_recipes.html", recipes=recipes)
 
 
 
