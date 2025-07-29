@@ -10,7 +10,7 @@
 </a>
 
   <p>Recipe bank</p>
-  
+
   {% for recipe in recipes %}
     <div>
       <div>
@@ -18,7 +18,7 @@
       </div>
       <br>
       <div>
-        <a href="/edit/{{ recipe.id }}">Edit</a> |
+        <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
 
         <a href="/delete/{{ recipe.id }}">Delete</a>
       </div>
