@@ -9,12 +9,22 @@
 <button>Back to menu</button>
 </a>
 
-<body>
-  <p>List of recipes:</p>
-    {% for recipe in recipes %}
-      <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
+  <p>Recipe bank</p>
+  
+  {% for recipe in recipes %}
+    <div>
+      <div>
+        <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
+      </div>
+      <br>
+      <div>
+        <a href="/edit/{{ recipe.id }}">Edit</a> |
+
+        <a href="/delete/{{ recipe.id }}">Delete</a>
+      </div>
       <hr>
-    {% endfor %}
+    </div>
+  {% endfor %}
 
 </body>
 </html>
