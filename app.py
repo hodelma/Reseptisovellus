@@ -2,6 +2,8 @@ from flask import Flask
 from flask import render_template, request
 import sqlite3
 
+import db
+
 app = Flask(__name__)
 
 @app.route("/")
