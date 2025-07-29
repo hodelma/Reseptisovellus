@@ -11,6 +11,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+
 @app.route("/add_recipe", methods=["GET", "POST"])
 def add_recipe():
     if request.method == "POST":
@@ -19,6 +20,7 @@ def add_recipe():
         all_recipes.add_recipe(title, recipe_info)
         return redirect("/added_recipes")
     return render_template("add_recipe.html")
+
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
@@ -33,6 +35,20 @@ def edit_recipe(recipe_id):
         all_recipes.edit_recipe(recipe_id, title, instructions)
         return redirect("/added_recipes")
     return render_template("edit_recipe.html")
+
+
+@app.route("/remove_mode/<int:recipe_id>", methods=["GET", "POST"])
+def delete_recipe(recipe_id):
+    recipe = all_recipes.get_recipe(recipe_id)
+
+    if request.method == "GET":
+        return render_template("remove_recipe.html", recipe=recipe)
+
+    if request.method == "POST":
+        if "continue" in request.form:
+            all_recipes.remove_recipe(recipe_id)
+        return redirect("/added_recipes")
+    return render_template("remove_recipe.html")
 
 
 @app.route("/added_recipes", methods=["GET", "POST"])
