@@ -106,3 +106,12 @@ def user_login():
         else:
             flash("ERROR: Invalid username or password")
             return render_template("login.html", username=username)
+        
+
+@app.route("/logout")
+def logout():
+    if "user_id" in session:
+        del session["user_id"]
+        del session["username"]
+        flash("Successfully logged out")
+    return redirect("/")

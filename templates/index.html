@@ -12,6 +12,13 @@
 {% endif %}
 
 <body>
+  
+  {% for message in get_flashed_messages() %}
+  <div class="info">
+    {{ message }}
+  </div>
+  {% endfor %}
+
   <h1>Welcome to Recipeland!</h1>
   <p>
     <br>
@@ -29,14 +36,23 @@
   <br>
   </a>
 
-  <p>
-    <a href="/register">
-    Don't have an account yet? Create account</a>
+  {% if not session.user_id %}
+
+    <p>
+      <a href="/register">
+      Don't have an account yet? Create account</a>
+    </p>
+
+    <p>
+      <a href="/user_login">
+      Already have an account? Log in</a>
+
+  {% else %}
+
+    <a href="/logout">Log out</a>
   </p>
-  <p>
-    <a href="/user_login">
-    Already have an account? Log in</a>
-  </p>
+
+  {% endif %}
 </body>
 
 </html>
