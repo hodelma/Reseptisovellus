@@ -1,11 +1,11 @@
 from flask import Flask
-from flask import render_template, request, redirect, session
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import render_template, request, redirect, session, flash
 import sqlite3
 
 import db
 import config
 import all_recipes
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -73,19 +73,18 @@ def create_account():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
-
+    
     if password1 != password2:
-        return "ERROR: Passwords do not match"
-    password_hash = generate_password_hash(password1)
+        flash("ERROR: Passwords do not match")
+        return redirect("/register")
 
     try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
-
+        users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        return "ERROR: Username is already taken"
+        flash("ERROR: Username is already taken")
+        return redirect("/register")
 
-    return "You have succesfully registered!"
+    return redirect("/")
 
 
 @app.route("/user_login", methods=["GET", "POST"])
@@ -97,13 +96,15 @@ def user_login():
         username = request.form["username"]
         password = request.form["password"]
     
-    sql = "SELECT password_hash FROM users WHERE username = ?"
-    password_hash = db.query(sql, [username])[0][0]
+        user_id = users.check_login_credentials(username, password)
 
-    if check_password_hash(password_hash, password):
-        session["username"] = username
-        return redirect("/")
-    else:
-        return "ERROR: Invalid username or password"
+        if user_id:
+            session["user_id"] = user_id
+            session["username"] = username
+            return redirect("/")
+        
+        else:
+            flash("ERROR: Invalid username or password")
+            return redirect("/user_login")
 
 
