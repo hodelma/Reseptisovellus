@@ -11,7 +11,7 @@
   <form action="/user_login" method="post">
     <p>
       Username: <br />
-      <input type="text" name="username" />
+      <input type="text" name="username" value="{{ username or '' }}" />
     </p>
     <p>
       Password: <br />

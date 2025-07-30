@@ -102,9 +102,7 @@ def user_login():
             session["user_id"] = user_id
             session["username"] = username
             return redirect("/")
-        
+       
         else:
             flash("ERROR: Invalid username or password")
-            return redirect("/user_login")
-
-
+            return render_template("login.html", username=username)
