@@ -76,13 +76,13 @@ def create_account():
     
     if password1 != password2:
         flash("ERROR: Passwords do not match")
-        return redirect("/register")
+        return render_template("register.html", username=username)
 
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
-        return redirect("/register")
+        return render_template("register.html", username=username)
 
     return redirect("/")
 
