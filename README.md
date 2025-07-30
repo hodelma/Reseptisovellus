@@ -21,7 +21,7 @@ Ruokareseptit
 Varmista, että sinulla on ladattuna python3
 
 Kloonaa repositorio<br>
-```git@github.com:hodelma/Reseptisovellus.git```
+```git clone git@github.com:hodelma/Reseptisovellus.git```
 
 
 Ota käyttöön virtuaaliympäristö komennolla<br>
