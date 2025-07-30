@@ -67,7 +67,7 @@ def register():
 
 
 @app.route("/create_account", methods=["POST"])
-def create():
+def create_account():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -81,7 +81,7 @@ def create():
         db.execute(sql, [username, password_hash])
 
     except sqlite3.IntegrityError:
-        return "ERROR: Credential is already taken"
+        return "ERROR: Username is already taken"
 
     return "You have succesfully registered!"
 
