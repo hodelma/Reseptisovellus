@@ -12,22 +12,23 @@
 {% endif %}
 
 <body>
-  
-  {% for message in get_flashed_messages() %}
-  <div class="info">
-    {{ message }}
-  </div>
-  {% endfor %}
 
   <h1>Welcome to Recipeland!</h1>
   <p>
     <br>
     In this app, you can share your favorite recipes and rate other users' recipes.
   </p>
+  <br>
 
     <a href="/add_recipe">
       <button>Add a new recipe</button>
     </a>
+  {% for message in get_flashed_messages() %}
+  <div class="info">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
   <br>
   <br>
   <a href="/added_recipes">

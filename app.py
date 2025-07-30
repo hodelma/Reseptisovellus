@@ -17,6 +17,10 @@ def index():
 
 @app.route("/add_recipe", methods=["GET", "POST"])
 def add_recipe():
+    if "user_id" not in session:
+        flash("You need to log in to add a recipe")
+        return redirect("/")
+    
     if request.method == "POST":
         instructions = request.form.get("instructions")
         title = request.form.get("title")
