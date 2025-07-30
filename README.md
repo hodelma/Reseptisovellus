@@ -16,3 +16,25 @@ Ruokareseptit
 - Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun (esim. alkuruoka, intialainen, vegaaninen).
 
 - Käyttäjä pystyy antamaan reseptille kommentin ja arvosanan. Reseptistä näytetään kommentit ja keskimääräinen arvosana.
+
+# Sovelluksen asentamisohjeet
+Varmista, että sinulla on ladattuna python3
+
+Kloonaa repositorio<br>
+```git@github.com:hodelma/Reseptisovellus.git```
+
+
+Ota käyttöön virtuaaliympäristö komennolla<br>
+```python3 -m venv venv```<br>
+ja suorita sitten<br>
+```source venv/bin/activate```
+
+
+Luo tietokanta komennolla<br>
+```database.db < schema.sql```
+
+
+Suorita flask sovellus komennolla<br>
+```flask run```<br>
+tai vaihtoehtoisesti debug tilassa<br>
+```flask run --debug```
