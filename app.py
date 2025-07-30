@@ -1,12 +1,14 @@
 from flask import Flask
-from flask import render_template, request, redirect
-from werkzeug.security import generate_password_hash
+from flask import render_template, request, redirect, session
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 
 import db
+import config
 import all_recipes
 
 app = Flask(__name__)
+app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
@@ -84,5 +86,24 @@ def create_account():
         return "ERROR: Username is already taken"
 
     return "You have succesfully registered!"
+
+
+@app.route("/user_login", methods=["GET", "POST"])
+def user_login():
+    if request.method == "GET":
+        return render_template("login.html")
+    
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+    
+    sql = "SELECT password_hash FROM users WHERE username = ?"
+    password_hash = db.query(sql, [username])[0][0]
+
+    if check_password_hash(password_hash, password):
+        session["username"] = username
+        return redirect("/")
+    else:
+        return "ERROR: Invalid username or password"
 
 
