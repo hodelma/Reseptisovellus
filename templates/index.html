@@ -5,6 +5,12 @@
   <title>Recipeland</title>
 </head>
 
+{% if session.user_id %}
+<p>
+  You are logged in as {{ session.username }}</a>
+</p>
+{% endif %}
+
 <body>
   <h1>Welcome to Recipeland!</h1>
   <p>
@@ -27,13 +33,10 @@
     <a href="/register">
     Don't have an account yet? Create account</a>
   </p>
-
-  <br>
   <p>
     <a href="/user_login">
     Already have an account? Log in</a>
   </p>
-
 </body>
 
 </html>

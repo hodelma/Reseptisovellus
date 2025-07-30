@@ -24,6 +24,13 @@
   <p>
     <a href="/">Back to menu</a>
   </p>
+
+  {% for message in get_flashed_messages() %}
+  <div class="info">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
 </body>
 
 </html>
