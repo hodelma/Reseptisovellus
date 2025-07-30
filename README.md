@@ -17,24 +17,38 @@ Ruokareseptit
 
 - Käyttäjä pystyy antamaan reseptille kommentin ja arvosanan. Reseptistä näytetään kommentit ja keskimääräinen arvosana.
 
-# Sovelluksen asentamisohjeet
+## Sovelluksen asentamisohjeet
 Varmista, että sinulla on ladattuna python3
 
-Kloonaa repositorio<br>
-```git clone git@github.com:hodelma/Reseptisovellus.git```
+1. Kloonaa repositorio
+```bash
+git clone git@github.com:hodelma/Reseptisovellus.git
+```
 
 
-Ota käyttöön virtuaaliympäristö komennolla<br>
-```python3 -m venv venv```<br>
-ja suorita sitten<br>
-```source venv/bin/activate```
+2. Ota käyttöön virtuaaliympäristö komennolla
+```bash
+python3 -m venv venv
+```
+
+3. Siirry virtuaaliympäristöön
+```bash
+source venv/bin/activate
+```
 
 
-Luo tietokanta komennolla<br>
-```database.db < schema.sql```
+4. Luo tietokanta komennolla
+```bash
+database.db < schema.sql
+```
 
 
-Suorita flask sovellus komennolla<br>
-```flask run```<br>
-tai vaihtoehtoisesti debug tilassa<br>
-```flask run --debug```
+5. Suorita flask sovellus komennolla
+```bash
+flask run
+```
+
+6. Sovelluksen suoritus debug tilassa (vapaavalintainen)
+```bash
+flask run --debug
+```
