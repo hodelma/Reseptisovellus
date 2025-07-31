@@ -11,6 +11,13 @@
 
 {% if recipe %}
 
+  <br>
+  <br>
+
+  <a href="/added_recipes">
+  <button>Back</button>
+  </a>
+
   <h1>{{ recipe.title }}</h1>
   
   <p>
@@ -20,6 +27,7 @@
 {% else %}
 
 <form action="/search_recipe" method="get">
+  
   <p>
     Search for:
     {% if recipe_query %}
@@ -37,7 +45,7 @@
 {% if recipe_query %}
 
 <a href="/added_recipes">
-<button>Back to recipebank</button>
+<button>Back</button>
 </a>
 
 <hr />
