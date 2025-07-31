@@ -24,6 +24,10 @@ def add_recipe():
     if request.method == "POST":
         instructions = request.form.get("instructions")
         title = request.form.get("title")
+
+        if not title or len(title) > 100 or len(instructions) > 4500:
+            abort(403)
+
         user_id = session["user_id"]
         all_recipes.add_recipe(title, instructions, user_id)
         
@@ -48,6 +52,10 @@ def edit_recipe(recipe_id):
     if request.method == "POST":
         title = request.form["title"]
         instructions = request.form["instructions"]
+
+        if not title or len(title) > 100 or len(instructions) > 4500:
+            abort(403)
+
         all_recipes.edit_recipe(recipe_id, title, instructions)
 
         return redirect("/added_recipes")
@@ -112,7 +120,7 @@ def create_account():
 
     try:
         users.create_user(username, password1)
-        
+
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
         return render_template("register.html", username=username)

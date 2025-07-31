@@ -4,11 +4,11 @@
   <form action="/edit_mode/{{ recipe.id }}" method="post">
     <p>
         Recipe title:<br />
-        <textarea name="title" rows="1" cols="70" required>{{ recipe.title }}</textarea>
+        <textarea name="title" rows="1" cols="70" maxlength="100" required>{{ recipe.title }}</textarea>
     </p>
     <p>
       Your recipe:<br />
-        <textarea name="instructions" rows="10" cols="70" >{{ recipe.instructions }}</textarea>
+        <textarea name="instructions" rows="10" cols="70" maxlength="4500">{{ recipe.instructions }} </textarea>
     </p>
     <input type="submit" value="Finish editing" />
 

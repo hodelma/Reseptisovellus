@@ -13,7 +13,7 @@
 <body>
   <form action="/add_recipe" method="post">
     <p>Recipe title:<br />
-    <input type="text" name="title" size="74" />
+    <input type="text" name="title" size="74" maxlength="100" />
     </p>
 
     <p>Choose the dish type:</p>
@@ -37,7 +37,7 @@
       <input type="radio" name="diet" value="F" /> Gluten-Free
     </p>
     <p>Write your recipe: <br />
-      <textarea name="instructions" rows="10" cols="70"></textarea>
+      <textarea name="instructions" rows="10" cols="70" maxlength="4500"></textarea>
     </p>
     <input type="submit" value="Publish recipe" />
   </form>
