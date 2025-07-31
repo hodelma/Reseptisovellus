@@ -137,3 +137,11 @@ def logout():
         del session["username"]
         flash("Successfully logged out")
     return redirect("/")
+
+
+@app.route("/search_recipe")
+def search():
+    recipe_query = request.args.get("recipe_query")
+    recipes = all_recipes.get_recipes()
+    results = all_recipes.search_recipe(recipe_query) if recipe_query else []
+    return render_template("added_recipes.html", recipe_query=recipe_query, results=results, recipes=recipes)
