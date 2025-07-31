@@ -5,6 +5,12 @@
   <title>Recipeland</title>
 </head>
 
+{% for message in get_flashed_messages() %}
+<div class="info">
+  {{ message }}
+</div>
+{% endfor %}
+
 {% if session.user_id %}
 <p>
   You are logged in as {{ session.username }}</a>
@@ -23,11 +29,6 @@
     <a href="/add_recipe">
       <button>Add a new recipe</button>
     </a>
-  {% for message in get_flashed_messages() %}
-  <div class="info">
-    {{ message }}
-  </div>
-  {% endfor %}
   
   <br>
   <br>
