@@ -2,18 +2,18 @@ import db
 
 
 def get_recipes():
-    sql = """SELECT id, title FROM recipes ORDER BY id"""
+    sql = """SELECT id, title, instructions, user_id FROM recipes ORDER BY id"""
     return db.query(sql)
 
 
 def get_recipe(recipe_id):
-    sql = "SELECT id, title, instructions FROM recipes WHERE id = ?"
+    sql = "SELECT id, title, instructions, user_id FROM recipes WHERE id = ?"
     return db.query(sql, [recipe_id])[0]
 
 
-def add_recipe(title, instructions):
-    sql = """INSERT INTO recipes (title, instructions) VALUES (?, ?)"""
-    db.execute(sql, (title, instructions))
+def add_recipe(title, instructions, user_id):
+    sql = """INSERT INTO recipes (title, instructions, user_id) VALUES (?, ?, ?)"""
+    db.execute(sql, (title, instructions, user_id))
 
 
 def edit_recipe(recipe_id, title, instructions):

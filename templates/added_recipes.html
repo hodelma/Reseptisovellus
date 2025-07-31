@@ -9,6 +9,14 @@
 <button>Back to menu</button>
 </a>
 
+{% if recipe %}
+  <h1>{{ recipe.title }}</h1>
+  <p>
+    {{ recipe.instructions }}
+  </p>
+
+{% else %}
+
   <p>Recipe bank</p>
 
   {% if recipes %}
@@ -20,11 +28,12 @@
       </div>
       <br>
 
-      <div>
+      {% if recipe.user_id == session.user_id %}
+      <p>
         <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
-
         <a href="/remove_mode/{{ recipe.id }}">Delete</a>
-      </div>
+      </p>
+      {% endif %}
       <hr>
     </div>
 
@@ -34,6 +43,7 @@
     <p>No added recipes yet.</p>
 
   {% endif %}
+{% endif %}
 
 </body>
 </html>

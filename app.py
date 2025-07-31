@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session, flash
+from flask import render_template, request, redirect, session, flash, abort
 import sqlite3
 
 import db
@@ -24,7 +24,8 @@ def add_recipe():
     if request.method == "POST":
         instructions = request.form.get("instructions")
         title = request.form.get("title")
-        all_recipes.add_recipe(title, instructions)
+        user_id = session["user_id"]
+        all_recipes.add_recipe(title, instructions, user_id)
         
         return redirect("/added_recipes")
     return render_template("add_recipe.html")
@@ -33,6 +34,8 @@ def add_recipe():
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
     recipe = all_recipes.get_recipe(recipe_id)
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
         return render_template("edit_recipe.html", recipe=recipe)
@@ -49,11 +52,15 @@ def edit_recipe(recipe_id):
 @app.route("/remove_mode/<int:recipe_id>", methods=["GET", "POST"])
 def delete_recipe(recipe_id):
     recipe = all_recipes.get_recipe(recipe_id)
+    
+    if recipe["user_id"] != session["user_id"]:
+        abort(403)
 
     if request.method == "GET":
         return render_template("remove_recipe.html", recipe=recipe)
 
     if request.method == "POST":
+        
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
 
@@ -65,6 +72,17 @@ def delete_recipe(recipe_id):
 def added_recipes():
     recipes = all_recipes.get_recipes()
     return render_template("added_recipes.html", recipes=recipes)
+
+
+@app.route("/recipe/<int:recipe_id>")
+def show_recipe(recipe_id):
+    recipe = all_recipes.get_recipe(recipe_id)
+
+    if not recipe:
+        abort(404)
+
+    recipes = all_recipes.get_recipes()
+    return render_template("added_recipes.html", recipe=recipe, recipes=recipes)
 
 
 @app.route("/register")
