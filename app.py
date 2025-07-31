@@ -128,6 +128,8 @@ def create_account():
         flash("ERROR: Passwords do not match")
         return render_template("register.html", username=username)
 
+    flash(f"You have registered successfully! You are logged in as {username}")
+
     try:
         users.create_user(username, password1)
 

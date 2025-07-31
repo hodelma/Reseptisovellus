@@ -5,11 +5,6 @@
   <title>Recipeland</title>
 </head>
 
-{% for message in get_flashed_messages() %}
-<div class="info">
-  {{ message }}
-</div>
-{% endfor %}
 
 {% if session.user_id %}
 <p>
@@ -18,6 +13,12 @@
 {% endif %}
 
 <body>
+
+  {% for message in get_flashed_messages() %}
+  <div class="info">
+    {{ message }}
+  </div>
+  {% endfor %}
 
   <h1>Welcome to Recipeland!</h1>
   <p>
