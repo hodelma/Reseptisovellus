@@ -7,8 +7,18 @@ import config
 import all_recipes
 import users
 
+import markupsafe
+
 app = Flask(__name__)
 app.secret_key = config.secret_key
+
+
+@app.template_filter()
+def show_lines(recipe_content):
+    recipe_content = str(markupsafe.escape(recipe_content))
+    recipe_content = recipe_content.replace("\n", "<br />")
+    return markupsafe.Markup(recipe_content)
+
 
 @app.route("/")
 def index():
