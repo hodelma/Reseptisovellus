@@ -28,12 +28,17 @@ def add_recipe():
         all_recipes.add_recipe(title, instructions, user_id)
         
         return redirect("/added_recipes")
+    
     return render_template("add_recipe.html")
 
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
+    if "user_id" not in session:
+        abort(403)
+
     recipe = all_recipes.get_recipe(recipe_id)
+
     if recipe["user_id"] != session["user_id"]:
         abort(403)
 
@@ -46,11 +51,15 @@ def edit_recipe(recipe_id):
         all_recipes.edit_recipe(recipe_id, title, instructions)
 
         return redirect("/added_recipes")
+    
     return render_template("edit_recipe.html")
 
 
 @app.route("/remove_mode/<int:recipe_id>", methods=["GET", "POST"])
 def delete_recipe(recipe_id):
+    if "user_id" not in session:
+        abort(403)
+
     recipe = all_recipes.get_recipe(recipe_id)
     
     if recipe["user_id"] != session["user_id"]:
@@ -65,6 +74,7 @@ def delete_recipe(recipe_id):
             all_recipes.remove_recipe(recipe_id)
 
         return redirect("/added_recipes")
+    
     return render_template("remove_recipe.html")
 
 
@@ -102,6 +112,7 @@ def create_account():
 
     try:
         users.create_user(username, password1)
+        
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
         return render_template("register.html", username=username)
