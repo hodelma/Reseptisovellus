@@ -10,39 +10,82 @@
 </a>
 
 {% if recipe %}
+
   <h1>{{ recipe.title }}</h1>
+
   <p>
     {{ recipe.instructions }}
   </p>
 
 {% else %}
 
-  <p>Recipe bank</p>
+<form action="/search_recipe" method="get">
+  <p>
+    Search for:
+    {% if recipe_query %}
 
-  {% if recipes %}
+    <input type="text" name="recipe_query" value="{{ recipe_query }}" />
 
-  {% for recipe in recipes %}
+    {% else %}
+
+    <input type="text" name="recipe_query" /> <input type="submit" value="Search" />
+
+    {% endif %}
+  </p>
+</form>
+
+{% if recipe_query %}
+
+<a href="/added_recipes">
+<button>Back to recipebank</button>
+</a>
+
+<hr />
+<h2>Search results:</h2>
+
+<ul>
+{% for result in results %}
+  <li>
+    <a href="/recipe/{{ result.id }}">
+      {{ result.title }}
+    </a>
+    <br>
+  </li>  
+{% endfor %}
+</ul>
+
+{% else %}
+
+<h1>Recipe bank</h1>
+
+{% if recipes %}
+
+{% for recipe in recipes %}
+  <div>
     <div>
-      <div>
-        <a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a>
-      </div>
-      <br>
-
-      {% if recipe.user_id == session.user_id %}
-      <p>
-        <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
-        <a href="/remove_mode/{{ recipe.id }}">Delete</a>
-      </p>
-      {% endif %}
-      <hr>
+      <a href="/recipe/{{ recipe.id }}">
+        {{ recipe.title }}</a>
     </div>
+    <br>
 
-  {% endfor %}
+    {% if recipe.user_id == session.user_id %}
+    <p>
+      <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
+      <a href="/remove_mode/{{ recipe.id }}">Delete</a>
+    </p>
 
-  {% else %}
-    <p>No added recipes yet.</p>
+    {% endif %}
+    <hr>
+  </div>
+  
+{% endfor %}
 
-  {% endif %}
+{% else %}
+
+  <p>No added recipes yet.</p>
+
+{% endif %}
+{% endif %}
 {% endif %}
 
 </body>
