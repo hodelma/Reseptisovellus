@@ -128,10 +128,10 @@ def create_account():
         flash("ERROR: Passwords do not match")
         return render_template("register.html", username=username)
 
-    flash(f"You have registered successfully! You are logged in as {username}")
-
     try:
         users.create_user(username, password1)
+        flash(f"You have registered successfully as {username}")
+        flash("Please log in to use the application.")
 
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
