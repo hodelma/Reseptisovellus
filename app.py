@@ -130,7 +130,7 @@ def create_account():
 
     try:
         users.create_user(username, password1)
-        flash(f"You have registered successfully as {username}")
+        flash(f"You have registered successfully!")
         flash("Please log in to use the application.")
 
     except sqlite3.IntegrityError:
