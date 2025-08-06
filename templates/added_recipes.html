@@ -21,6 +21,10 @@
   <h1>{{ recipe.title }}</h1>
   
   <p>
+    From user: <a href="/user/{{ recipes.user_id }}">{{ session.username }}</a>
+  </p>
+
+  <p>
   {{ recipe.instructions | show_lines }}
   </p>
 
