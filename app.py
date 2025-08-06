@@ -122,6 +122,13 @@ def create_account():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+
+    if not username.strip():
+        flash("ERROR: Empty username")
+        return render_template("register.html", username=username)
+    
+    if len(username) > 15:
+        abort(403)
     
     if password1 != password2:
         flash("ERROR: Passwords do not match")
