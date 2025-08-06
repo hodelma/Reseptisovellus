@@ -27,9 +27,13 @@
   </p>
   <br>
 
+  {% if session.user_id %}
+
     <a href="/add_recipe">
       <button>Add a new recipe</button>
     </a>
+
+  {% endif %}
   
   <br>
   <br>
