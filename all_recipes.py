@@ -2,13 +2,20 @@ import db
 
 
 def get_recipes():
-    sql = """SELECT id, title, instructions, user_id FROM recipes ORDER BY id"""
+    sql = """SELECT recipes.id, recipes.title, recipes.instructions, users.id user_id, 
+                users.username
+            FROM recipes JOIN users ON recipes.user_id = users.id
+            ORDER BY recipes.id"""
     return db.query(sql)
 
 
 def get_recipe(recipe_id):
-    sql = "SELECT id, title, instructions, user_id FROM recipes WHERE id = ?"
-    return db.query(sql, [recipe_id])[0]
+    sql = """SELECT recipes.id, recipes.title, recipes.instructions, 
+                users.id user_id, users.username
+            FROM recipes, users WHERE recipes.user_id = users.id
+            AND recipes.id = ?"""
+    result = db.query(sql, [recipe_id])
+    return result[0] if result else None
 
 
 def add_recipe(title, instructions, user_id):
