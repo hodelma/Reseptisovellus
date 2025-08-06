@@ -1,12 +1,12 @@
+import sqlite3
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
-import sqlite3
+import markupsafe
 
 import config
 import all_recipes
 import users
 
-import markupsafe
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -29,7 +29,7 @@ def add_recipe():
     if "user_id" not in session:
         flash("You need to log in to add a recipe")
         return redirect("/")
-    
+
     if request.method == "POST":
         instructions = request.form.get("instructions")
         title = request.form.get("title")
@@ -39,9 +39,9 @@ def add_recipe():
 
         user_id = session["user_id"]
         all_recipes.add_recipe(title, instructions, user_id)
-        
+
         return redirect("/added_recipes")
-    
+
     return render_template("add_recipe.html")
 
 
@@ -57,7 +57,7 @@ def edit_recipe(recipe_id):
 
     if request.method == "GET":
         return render_template("edit_recipe.html", recipe=recipe)
-    
+
     if request.method == "POST":
         title = request.form["title"]
         instructions = request.form["instructions"]
@@ -68,7 +68,7 @@ def edit_recipe(recipe_id):
         all_recipes.edit_recipe(recipe_id, title, instructions)
 
         return redirect("/added_recipes")
-    
+
     return render_template("edit_recipe.html")
 
 
@@ -78,7 +78,7 @@ def delete_recipe(recipe_id):
         abort(403)
 
     recipe = all_recipes.get_recipe(recipe_id)
-    
+
     if recipe["user_id"] != session["user_id"]:
         abort(403)
 
@@ -86,12 +86,12 @@ def delete_recipe(recipe_id):
         return render_template("remove_recipe.html", recipe=recipe)
 
     if request.method == "POST":
-        
+
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
 
         return redirect("/added_recipes")
-    
+
     return render_template("remove_recipe.html")
 
 
@@ -126,17 +126,17 @@ def create_account():
     if not username.strip():
         flash("ERROR: Empty username")
         return render_template("register.html", username=username)
-    
+
     if len(username) > 15:
         abort(403)
-    
+
     if password1 != password2:
         flash("ERROR: Passwords do not match")
         return render_template("register.html", username=username)
 
     try:
         users.create_user(username, password1)
-        flash(f"You have registered successfully!")
+        flash("You have registered successfully!")
 
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
@@ -149,22 +149,21 @@ def create_account():
 def user_login():
     if request.method == "GET":
         return render_template("login.html")
-    
+
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-    
+
         user_id = users.check_login_credentials(username, password)
 
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
             return redirect("/")
-       
-        else:
-            flash("ERROR: Invalid username or password")
-            return render_template("login.html", username=username)
-        
+
+        flash("ERROR: Invalid username or password")
+        return render_template("login.html", username=username)
+
 
 @app.route("/logout")
 def logout():
@@ -180,4 +179,5 @@ def search():
     recipe_query = request.args.get("recipe_query")
     recipes = all_recipes.get_recipes()
     results = all_recipes.search_recipe(recipe_query) if recipe_query else []
-    return render_template("added_recipes.html", recipe_query=recipe_query, results=results, recipes=recipes)
+    return render_template("added_recipes.html", recipe_query=recipe_query,
+                           results=results, recipes=recipes)
