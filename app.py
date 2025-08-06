@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
 import sqlite3
 
-import db
 import config
 import all_recipes
 import users
@@ -131,7 +130,6 @@ def create_account():
     try:
         users.create_user(username, password1)
         flash(f"You have registered successfully!")
-        flash("Please log in to use the application.")
 
     except sqlite3.IntegrityError:
         flash("ERROR: Username is already taken")
