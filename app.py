@@ -45,6 +45,16 @@ def add_recipe():
     return render_template("add_recipe.html")
 
 
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+
+    if not user:
+        abort(404)
+
+    return render_template("show_user.html", user=user)
+
+
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
     if "user_id" not in session:
