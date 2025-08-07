@@ -22,7 +22,7 @@ Varmista, että sinulla on ladattuna python3 etukäteen.
 
 1. Kloonaa repositorio
 ```bash
-git clone git@github.com:hodelma/Reseptisovellus.git
+git clone https://github.com/hodelma/Reseptisovellus.git
 ```
 
 
