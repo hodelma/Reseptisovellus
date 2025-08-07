@@ -8,7 +8,9 @@ CREATE TABLE recipes (
     id INTEGER PRIMARY KEY,
     title TEXT,
     instructions TEXT,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
+    type_id INTEGER REFERENCES types,
+    diet_id INTEGER REFERENCES diets
 );
 
 CREATE TABLE types (
