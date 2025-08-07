@@ -5,6 +5,8 @@
   <title>Browse recipes</title>
 </head>
 
+<body>
+
 <a href="/">
 <button>Back to menu</button>
 </a>
@@ -19,9 +21,13 @@
   </a>
 
   <h1>{{ recipe.title }}</h1>
-  
+
   <p>
     From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+  </p>
+
+  <p>
+    {{ recipe.type }}, {{ recipe.diet }}
   </p>
 
   <p>
@@ -44,6 +50,7 @@
 
     {% endif %}
   </p>
+
 </form>
 
 {% if recipe_query %}
@@ -58,14 +65,18 @@
 {% if results %}
 
   <ul>
+
   {% for result in results %}
+
     <li>
       <a href="/recipe/{{ result.id }}">
         {{ result.title }}
       </a>
       <br>
     </li>  
+
   {% endfor %}
+
   </ul>
 
 {% else %}
@@ -95,6 +106,7 @@
     </p>
 
     {% endif %}
+
     <hr>
   </div>
   
@@ -105,7 +117,9 @@
   <p>No added recipes yet.</p>
 
 {% endif %}
+
 {% endif %}
+
 {% endif %}
 
 </body>
