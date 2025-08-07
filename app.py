@@ -33,12 +33,14 @@ def add_recipe():
     if request.method == "POST":
         instructions = request.form.get("instructions")
         title = request.form.get("title")
+        type = request.form.get("type")
+        diet = request.form.get("diet")
 
         if not title or len(title) > 100 or len(instructions) > 4500:
             abort(403)
 
         user_id = session["user_id"]
-        all_recipes.add_recipe(title, instructions, user_id)
+        all_recipes.add_recipe(title, instructions, type, diet, user_id)
 
         return redirect("/added_recipes")
 
