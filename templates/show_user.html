@@ -8,9 +8,25 @@
 <body>
 
     <h1>User {{ user.username }}</h1>
+
+    <p>
+      This user has published {{ recipes | count }} recipes.
+    </p>
+
+    <h2>Recipes</h2>
+    <ul>
+
+      {% for recipe in recipes %}
+
+      <li> <a href="/recipe/{{ recipe.id }}">{{ recipe.title }} </a> </li>
+
+      {% endfor %}
+    </ul>
+
     <p>
         <a href="/"> Back </a>
     </p>
 
 </body>
-<html></html>
+
+</html>
