@@ -52,7 +52,8 @@ def show_user(user_id):
     if not user:
         abort(404)
 
-    return render_template("show_user.html", user=user)
+    recipes = users.get_recipes(user_id)
+    return render_template("show_user.html", user=user, recipes=recipes)
 
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
