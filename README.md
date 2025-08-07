@@ -20,26 +20,26 @@ Ruokareseptit
 ## Sovelluksen asentamisohjeet
 Varmista, että sinulla on ladattuna python3 etukäteen.
 
-1. Asenna ```flask```-kirjasto
-```bash
-pip install flask
-```
-
-
-2. Kloonaa repositorio
+1. Kloonaa repositorio
 ```bash
 git clone git@github.com:hodelma/Reseptisovellus.git
 ```
 
 
-3. Ota käyttöön virtuaaliympäristö komennolla
+2. Ota käyttöön virtuaaliympäristö komennolla
 ```bash
 python3 -m venv venv
 ```
 
-4. Siirry virtuaaliympäristöön
+
+3. Siirry virtuaaliympäristöön
 ```bash
 source venv/bin/activate
+```
+
+4. Asenna ```flask```-kirjasto
+```bash
+pip install flask
 ```
 
 
