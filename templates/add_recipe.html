@@ -12,11 +12,13 @@
 
 <body>
   <form action="/add_recipe" method="post">
+
     <p>Recipe title:<br />
     <input type="text" name="title" size="74" maxlength="100" required />
     </p>
 
     <p>Choose the dish type:</p>
+
     <p>
       <input type="radio" name="type" value="1" required/> Starter / Appetizer
       <input type="radio" name="type" value="2" required/> Snack
@@ -26,19 +28,25 @@
       <input type="radio" name="type" value="6" required/> Lunch
       <input type="radio" name="type" value="7" required/> Beverage
       <input type="radio" name="type" value="8" required/> Dessert
+
     </p>
-    <p>Choose the diet preference for the dish:</p>
+    <p>Choose the diet preferences for the dish (optional):</p>
+
     <p>
-      <input type="radio" name="diet" value="1" required/> Non-vegetarian
-      <input type="radio" name="diet" value="2" required/> Vegetarian
-      <input type="radio" name="diet" value="3" required/> Vegan
-      <input type="radio" name="diet" value="4" required/> Flexitarian
-      <input type="radio" name="diet" value="5" required/> Low-Carb
-      <input type="radio" name="diet" value="6" required/> Gluten-Free
+      <input type="checkbox" name="diet" value="1" /> Non-vegetarian
+      <input type="checkbox" name="diet" value="2" /> Vegetarian
+      <input type="checkbox" name="diet" value="3" /> Vegan
+      <input type="checkbox" name="diet" value="4" /> Flexitarian
+      <input type="checkbox" name="diet" value="5" /> Pescatarian
+      <input type="checkbox" name="diet" value="6" /> Low-Carb
+      <input type="checkbox" name="diet" value="7" /> Gluten-Free
+      <input type="checkbox" name="diet" value="8" /> Lactose-Free
     </p>
+
     <p>Write your recipe: <br />
       <textarea name="instructions" rows="10" cols="70" maxlength="4500" required></textarea>
     </p>
+
     <input type="submit" value="Publish recipe" />
   </form>
 </body>

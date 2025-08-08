@@ -11,6 +11,7 @@ INSERT INTO diets (title) VALUES ("Non-vegetarian");
 INSERT INTO diets (title) VALUES ("Vegetarian");
 INSERT INTO diets (title) VALUES ("Vegan");
 INSERT INTO diets (title) VALUES ("Flexitarian");
+INSERT INTO diets (title) VALUES ("Pescatarian");
 INSERT INTO diets (title) VALUES ("Low-Carb");
 INSERT INTO diets (title) VALUES ("Gluten-Free");
-
+INSERT INTO diets (title) VALUES ("Lactose-Free");
