@@ -46,6 +46,7 @@ pip install flask
 5. Luo tietokanta komennolla
 ```bash
 sqlite3 database.db < schema.sql
+sqlite3 database.db < init.sql
 ```
 
 
