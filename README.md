@@ -1,6 +1,10 @@
 # Reseptisovellus
+<br><br>
+## Tervetuloa käyttämään ruokareseptisovellusta! 🍽
+<br>
 
-Ruokareseptit
+**Tässä sovelluksessa tulee olemaan seuraavanlaiset ominaisuudet:**
+<br><br>
 - Sovelluksessa käyttäjät pystyvät jakamaan ruokareseptejään. Reseptissä lukee tarvittavat ainekset ja valmistusohje.
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
@@ -16,9 +20,10 @@ Ruokareseptit
 - Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun (esim. alkuruoka, intialainen, vegaaninen).
 
 - Käyttäjä pystyy antamaan reseptille kommentin ja arvosanan. Reseptistä näytetään kommentit ja keskimääräinen arvosana.
-
+<br><br>
 ## Sovelluksen asentamisohjeet
-Varmista, että sinulla on ladattuna python3 etukäteen.
+*Varmista, että sinulla on ladattuna python3 etukäteen.*
+<br><br>
 
 1. Kloonaa repositorio
 ```bash
@@ -43,19 +48,19 @@ pip install flask
 ```
 
 
-5. Luo tietokanta komennolla
+5. Luo tietokanta komennoilla
 ```bash
 sqlite3 database.db < schema.sql
 sqlite3 database.db < init.sql
 ```
 
 
-6. Suorita flask sovellus komennolla
+6. Suorita flask-sovellus komennolla
 ```bash
 flask run
 ```
 
-7. Sovelluksen suoritus debug tilassa (vapaavalintainen)
+7. Sovelluksen suoritus debug-tilassa (vapaavalintainen)
 ```bash
 flask run --debug
 ```
