@@ -194,3 +194,35 @@ def search():
     results = all_recipes.search_recipe(recipe_query) if recipe_query else []
     return render_template("added_recipes.html", recipe_query=recipe_query,
                            results=results, recipes=recipes)
+
+
+@app.route("/add_comment", methods=["POST"])
+def add_comment():
+    if "user_id" not in session:
+        flash("You need to log in to add a comment")
+        return redirect("/")
+
+    if request.method == "POST":
+        comment = request.form.get("comment")
+        recipe_id = request.form.get("recipe_id")
+
+        if not comment or len(comment) > 2000 or len(comment) < 10:
+            abort(403)
+
+        user_id = session["user_id"]
+        all_recipes.add_comment(comment, recipe_id, user_id)
+
+        return redirect(f"/show_comments/{recipe_id}")
+
+    return render_template("show_comments.html")
+
+
+@app.route("/show_comments/<int:recipe_id>")
+def show_comments(recipe_id):
+    recipe = all_recipes.get_recipe(recipe_id)
+    comments = all_recipes.get_comments(recipe_id)
+
+    if not recipe:
+        abort(404)
+
+    return render_template("show_comments.html", recipe=recipe, comments=comments)

@@ -33,6 +33,15 @@ def get_recipe(recipe_id):
     result = db.query(sql, [recipe_id])
     return result[0] if result else None
 
+def get_comments(recipe_id):
+    sql = """SELECT comments.comment_text, comments.rating,
+                users.username
+            FROM comments
+            JOIN users ON comments.user_id = users.id
+            WHERE comments.recipe_id = ?"""
+    result = db.query(sql, [recipe_id])
+    return result
+
 
 def add_recipe(title, instructions, type_id, diet_id, user_id):
     sql = """INSERT INTO recipes (title, instructions, type_id, diet_id, user_id) VALUES (?, ?, ?, ?, ?)"""
@@ -52,3 +61,8 @@ def remove_recipe(recipe_id):
 def search_recipe(recipe_query):
     sql = """SELECT id, title FROM recipes WHERE title LIKE ?"""
     return db.query(sql, ["%" + recipe_query + "%"])
+
+
+def add_comment(comment, recipe_id, user_id):
+    sql = """INSERT INTO comments (comment_text, recipe_id, user_id) VALUES (?, ?, ?)"""
+    db.execute(sql, (comment, recipe_id, user_id))
