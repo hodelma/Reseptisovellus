@@ -34,6 +34,22 @@
   {{ recipe.instructions | show_lines }}
   </p>
 
+  <form action="/add_comment" method="post">
+
+  <p>Write your comment:<br />
+    <textarea name="comment" rows="5" cols="70" minlength="10" maxlength="2000" required></textarea>
+    <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
+  </p>
+
+  <button type="submit">Send</button>
+
+  <br>
+  <br>
+
+  <a href="/show_comments/{{ recipe.id }}">Browse comments</a>
+
+  </form>
+
 {% else %}
 
 <form action="/search_recipe" method="get">

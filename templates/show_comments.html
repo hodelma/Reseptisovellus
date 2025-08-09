@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> Browse comments </title>
+</head>
+
+<body>
+
+    <h1>{{ recipe.title }}</h1>
+
+    <h2>Comments:</h2>
+
+    {% if comments %}
+
+        {% for comment in comments %}
+            <hr/>
+
+        <p>
+            <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+        </p>
+
+        <p>
+            {{ comment.comment_text }}
+        </p>
+
+        {% endfor %}
+        <hr/>
+    
+    {% else %}
+
+        <p>No comments added yet.</p>
+        <hr/>
+
+    {% endif %}
+
+    <a href="/recipe/{{ recipe.id }}"> Back </a>
+
+</body>
+
+</html>
