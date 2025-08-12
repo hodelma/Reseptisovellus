@@ -122,7 +122,23 @@ def show_recipe(recipe_id):
         abort(404)
 
     recipes = all_recipes.get_recipes()
-    return render_template("added_recipes.html", recipe=recipe, recipes=recipes)
+    comments = list(all_recipes.get_comments(recipe_id))
+
+    ratings_sum = 0
+    ratings_count = 0
+    average_rating = 0
+
+    for comment in comments:
+
+        if comment["rating"]:
+            ratings_sum += comment["rating"]
+            ratings_count += 1
+    
+    if ratings_count > 0:
+        average_rating = round(ratings_sum / ratings_count, 1)
+
+    return render_template("added_recipes.html", recipe=recipe, recipes=recipes, 
+    average_rating=average_rating, ratings_count=ratings_count)
 
 
 @app.route("/register")
@@ -210,7 +226,7 @@ def add_comment():
         if not comment or len(comment) > 2000 or len(comment) < 10:
             abort(403)
 
-        if not rating or rating < 1 or rating > 5:
+        if rating is None or rating < 0 or rating > 5:
             abort(400)
 
         user_id = session["user_id"]
@@ -254,7 +270,7 @@ def edit_comment(comment_id):
         if not text or len(text) > 2000 or len(text) < 10:
             abort(403)
 
-        if not rating or rating < 0 or rating > 5:
+        if rating is None or rating < 0 or rating > 5:
             abort(403)
 
         all_recipes.edit_comment(comment_id, text, rating)

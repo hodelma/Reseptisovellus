@@ -75,14 +75,14 @@ def search_recipe(recipe_query):
     return db.query(sql, ["%" + recipe_query + "%"])
 
 
-def add_comment(comment, recipe_id, user_id):
-    sql = """INSERT INTO comments (comment_text, recipe_id, user_id) VALUES (?, ?, ?)"""
-    db.execute(sql, (comment, recipe_id, user_id))
+def add_comment(comment, recipe_id, user_id, rating):
+    sql = """INSERT INTO comments (comment_text, recipe_id, user_id, rating) VALUES (?, ?, ?, ?)"""
+    db.execute(sql, (comment, recipe_id, user_id, rating))
 
 
-def edit_comment(comment_id, comment):
-    sql = """UPDATE comments SET comment_text = ? WHERE id = ?"""
-    db.execute(sql, [comment, comment_id])
+def edit_comment(comment_id, comment, rating):
+    sql = """UPDATE comments SET comment_text = ?, rating = ? WHERE id = ?"""
+    db.execute(sql, [comment, rating, comment_id])
 
 
 def remove_comment(comment_id):
