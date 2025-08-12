@@ -18,8 +18,8 @@ def get_recipes():
 
 
 def get_recipe(recipe_id):
-    sql = """SELECT recipes.id, 
-                    recipes.title, 
+    sql = """SELECT recipes.id,
+                    recipes.title,
                     recipes.instructions,
                     types.title type,
                     diets.title diet,
@@ -34,7 +34,7 @@ def get_recipe(recipe_id):
     return result[0] if result else None
 
 def get_comment(comment_id):
-    sql = """SELECT comments.id, comments.comment_text, 
+    sql = """SELECT comments.id, comments.comment_text,
                 comments.rating, users.id user_id,
                 users.username, comments.recipe_id
             FROM comments
@@ -45,7 +45,7 @@ def get_comment(comment_id):
 
 
 def get_comments(recipe_id):
-    sql = """SELECT comments.id, comments.comment_text, 
+    sql = """SELECT comments.id, comments.comment_text,
                     comments.rating, comments.user_id,
                     users.username
             FROM comments
@@ -56,7 +56,8 @@ def get_comments(recipe_id):
 
 
 def add_recipe(title, instructions, type_id, diet_id, user_id):
-    sql = """INSERT INTO recipes (title, instructions, type_id, diet_id, user_id) VALUES (?, ?, ?, ?, ?)"""
+    sql = """INSERT INTO recipes (title, instructions, type_id, diet_id, user_id)
+    VALUES (?, ?, ?, ?, ?)"""
     db.execute(sql, (title, instructions, type_id, diet_id, user_id))
 
 

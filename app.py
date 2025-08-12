@@ -133,11 +133,11 @@ def show_recipe(recipe_id):
         if comment["rating"]:
             ratings_sum += comment["rating"]
             ratings_count += 1
-    
+
     if ratings_count > 0:
         average_rating = round(ratings_sum / ratings_count, 1)
 
-    return render_template("added_recipes.html", recipe=recipe, recipes=recipes, 
+    return render_template("added_recipes.html", recipe=recipe, recipes=recipes,
     average_rating=average_rating, ratings_count=ratings_count)
 
 
@@ -257,7 +257,7 @@ def edit_comment(comment_id):
 
     if comment["user_id"] != session["user_id"]:
         abort(403)
-    
+
     recipe_id = comment["recipe_id"]
 
     if request.method == "GET":
