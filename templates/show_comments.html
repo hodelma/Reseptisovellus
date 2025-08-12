@@ -13,15 +13,26 @@
 
     {% if comments %}
 
-        {% for comment in comments %}
-            <hr/>
+    {% for comment in comments %}
+        <hr/>
+
+    <p>
+        <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a>
+    </p>
+
+    <p>
+        {{ comment.comment_text }}
+        
+        
+        {% if comment.user_id == session.user_id %}
 
         <p>
-            <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+            <a href="/edit_comment/{{ comment.id }}">Edit</a> |
+            <a href="/remove_comment/{{ comment.id }}">Delete</a>
         </p>
 
-        <p>
-            {{ comment.comment_text }}
+        {% endif %}
+            
         </p>
 
         {% endfor %}
