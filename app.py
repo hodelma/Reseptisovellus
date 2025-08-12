@@ -226,3 +226,56 @@ def show_comments(recipe_id):
         abort(404)
 
     return render_template("show_comments.html", recipe=recipe, comments=comments)
+
+
+@app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    if "user_id" not in session:
+        abort(403)
+
+    comment = all_recipes.get_comment(comment_id)
+
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+    
+    recipe_id = comment["recipe_id"]
+
+    if request.method == "GET":
+        return render_template("edit_comment.html", comment=comment)
+
+    if request.method == "POST":
+        text = request.form["comment"]
+
+        if not text or len(text) > 2000 or len(text) < 10:
+            abort(403)
+
+        all_recipes.edit_comment(comment_id, text)
+
+        return redirect(f"/show_comments/{recipe_id}")
+
+    return render_template("edit_comment.html")
+
+
+@app.route("/remove_comment/<int:comment_id>", methods=["GET", "POST"])
+def delete_comment(comment_id):
+    if "user_id" not in session:
+        abort(403)
+
+    comment = all_recipes.get_comment(comment_id)
+
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+
+    recipe_id = comment["recipe_id"]
+
+    if request.method == "GET":
+        return render_template("remove_comment.html", comment=comment)
+
+    if request.method == "POST":
+
+        if "continue" in request.form:
+            all_recipes.remove_comment(comment_id)
+
+        return redirect(f"/show_comments/{recipe_id}")
+
+    return render_template("remove_comment.html")

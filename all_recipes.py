@@ -33,9 +33,21 @@ def get_recipe(recipe_id):
     result = db.query(sql, [recipe_id])
     return result[0] if result else None
 
+def get_comment(comment_id):
+    sql = """SELECT comments.id, comments.comment_text, 
+                comments.rating, users.id user_id,
+                users.username, comments.recipe_id
+            FROM comments
+            JOIN users ON comments.user_id = users.id
+            WHERE comments.id = ?"""
+    result = db.query(sql, [comment_id])
+    return result[0] if result else None
+
+
 def get_comments(recipe_id):
-    sql = """SELECT comments.comment_text, comments.rating,
-                users.username
+    sql = """SELECT comments.id, comments.comment_text, 
+                    comments.rating, comments.user_id,
+                    users.username
             FROM comments
             JOIN users ON comments.user_id = users.id
             WHERE comments.recipe_id = ?"""
@@ -66,3 +78,13 @@ def search_recipe(recipe_query):
 def add_comment(comment, recipe_id, user_id):
     sql = """INSERT INTO comments (comment_text, recipe_id, user_id) VALUES (?, ?, ?)"""
     db.execute(sql, (comment, recipe_id, user_id))
+
+
+def edit_comment(comment_id, comment):
+    sql = """UPDATE comments SET comment_text = ? WHERE id = ?"""
+    db.execute(sql, [comment, comment_id])
+
+
+def remove_comment(comment_id):
+    sql = """DELETE FROM comments WHERE id = ?"""
+    db.execute(sql, [comment_id])
