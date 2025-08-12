@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+  <form action="/edit_comment/{{ comment.id }}" method="post">
+    <p>
+      Your comment:<br />
+        <textarea name="comment" rows="10" cols="70" maxlength="2000">{{ comment.comment_text }} </textarea>
+    </p>
+    <input type="submit" value="Finish editing" />
+
+    <p>
+        <a href="/show_comments">
+        <button>Back</button>
+        </a>
+    </p>
+  </form>
+
+</html>
