@@ -23,6 +23,10 @@
   <h1>{{ recipe.title }}</h1>
 
   <p>
+    Average rating: {{ average_rating }} ({{ ratings_count }} ratings)
+  </p>
+
+  <p>
     From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
   </p>
 
