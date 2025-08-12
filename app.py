@@ -205,12 +205,16 @@ def add_comment():
     if request.method == "POST":
         comment = request.form.get("comment")
         recipe_id = request.form.get("recipe_id")
+        rating = int(request.form.get("rating"))
 
         if not comment or len(comment) > 2000 or len(comment) < 10:
             abort(403)
 
+        if not rating or rating < 1 or rating > 5:
+            abort(400)
+
         user_id = session["user_id"]
-        all_recipes.add_comment(comment, recipe_id, user_id)
+        all_recipes.add_comment(comment, recipe_id, user_id, rating)
 
         return redirect(f"/show_comments/{recipe_id}")
 
@@ -245,11 +249,15 @@ def edit_comment(comment_id):
 
     if request.method == "POST":
         text = request.form["comment"]
+        rating = int(request.form["rating"])
 
         if not text or len(text) > 2000 or len(text) < 10:
             abort(403)
 
-        all_recipes.edit_comment(comment_id, text)
+        if not rating or rating < 0 or rating > 5:
+            abort(403)
+
+        all_recipes.edit_comment(comment_id, text, rating)
 
         return redirect(f"/show_comments/{recipe_id}")
 
