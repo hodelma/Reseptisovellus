@@ -122,7 +122,7 @@ def show_recipe(recipe_id):
         abort(404)
 
     recipes = all_recipes.get_recipes()
-    comments = list(all_recipes.get_comments(recipe_id))
+    comments = all_recipes.get_comments(recipe_id)
 
     ratings_sum = 0
     ratings_count = 0
