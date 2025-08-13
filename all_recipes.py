@@ -89,3 +89,12 @@ def edit_comment(comment_id, comment, rating):
 def remove_comment(comment_id):
     sql = """DELETE FROM comments WHERE id = ?"""
     db.execute(sql, [comment_id])
+
+
+def rating_data(recipe_id):
+    sql = """SELECT AVG(rating) average_rating,
+             COUNT(rating) ratings_amount
+             FROM comments
+             WHERE recipe_id = ?"""
+    result = db.query(sql, [recipe_id])
+    return result[0] if result else None

@@ -122,23 +122,9 @@ def show_recipe(recipe_id):
         abort(404)
 
     recipes = all_recipes.get_recipes()
-    comments = all_recipes.get_comments(recipe_id)
+    average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
-    ratings_sum = 0
-    ratings_count = 0
-    average_rating = 0
-
-    for comment in comments:
-
-        if comment["rating"]:
-            ratings_sum += comment["rating"]
-            ratings_count += 1
-
-    if ratings_count > 0:
-        average_rating = round(ratings_sum / ratings_count, 1)
-
-    return render_template("added_recipes.html", recipe=recipe, recipes=recipes,
-    average_rating=average_rating, ratings_count=ratings_count)
+    return render_template("added_recipes.html", recipe=recipe, recipes=recipes, average_rating=average_rating, ratings_amount=ratings_amount)
 
 
 @app.route("/register")

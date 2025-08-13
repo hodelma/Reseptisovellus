@@ -22,9 +22,19 @@
 
   <h1>{{ recipe.title }}</h1>
 
+  {% if average_rating %}
+
   <p>
-    Average rating: {{ average_rating }} ({{ ratings_count }} ratings)
+    Average rating: {{ average_rating }} ({{ ratings_amount }} ratings)
   </p>
+
+  {% else %}
+
+    <p>
+      No ratings yet.
+    </p>
+
+  {% endif %}
 
   <p>
     From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
