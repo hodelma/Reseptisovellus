@@ -100,7 +100,6 @@
 <button>Back</button>
 </a>
 
-<hr />
 <h2>Search results:</h2>
 
 {% if results %}
@@ -109,12 +108,17 @@
 
   {% for result in results %}
 
-    <li>
       <a href="/recipe/{{ result.id }}">
         {{ result.title }}
       </a>
+      
+      <p>
+        From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a>
+      </p>
+
+      <hr>
+
       <br>
-    </li>  
 
   {% endfor %}
 

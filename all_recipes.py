@@ -72,8 +72,11 @@ def remove_recipe(recipe_id):
 
 
 def search_recipe(recipe_query):
-    sql = """SELECT id, title FROM recipes WHERE title LIKE ?"""
-    return db.query(sql, ["%" + recipe_query + "%"])
+    sql = """SELECT recipes.id, recipes.title, users.username, recipes.user_id
+            FROM recipes
+            JOIN users ON recipes.user_id = users.id
+            WHERE recipes.title LIKE ? OR users.username LIKE ?"""
+    return db.query(sql, ["%" + recipe_query + "%","%" + recipe_query + "%"])
 
 
 def add_comment(comment, recipe_id, user_id, rating):
