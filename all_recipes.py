@@ -1,7 +1,12 @@
 import db
 
 
-def get_recipes():
+def recipe_count():
+    sql = "SELECT COUNT(*) FROM recipes"
+    return db.query(sql)[0][0]
+
+
+def get_recipes(page, page_size):
     sql = """SELECT recipes.id,
                     recipes.title,
                     recipes.instructions,
@@ -13,8 +18,11 @@ def get_recipes():
             JOIN types ON recipes.type_id = types.id
             JOIN diets ON recipes.diet_id = diets.id
             JOIN users ON recipes.user_id = users.id
-            ORDER BY recipes.id"""
-    return db.query(sql)
+            ORDER BY recipes.id
+            LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [limit, offset])
 
 
 def get_recipe(recipe_id):
@@ -75,8 +83,8 @@ def search_recipe(recipe_query):
     sql = """SELECT recipes.id, recipes.title, users.username, recipes.user_id
             FROM recipes
             JOIN users ON recipes.user_id = users.id
-            WHERE recipes.title LIKE ? OR users.username LIKE ?"""
-    return db.query(sql, ["%" + recipe_query + "%","%" + recipe_query + "%"])
+            WHERE recipes.title LIKE ?"""
+    return db.query(sql, ["%" + recipe_query + "%"])
 
 
 def add_comment(comment, recipe_id, user_id, rating):
