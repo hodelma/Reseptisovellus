@@ -9,7 +9,7 @@
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 
-- Käyttäjä pystyy lisäämään reseptejä ja muokkaamaan ja poistamaan niitä.
+- Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan reseptejä.
 
 - Käyttäjä näkee sovellukseen lisätyt reseptit.
 
@@ -17,7 +17,7 @@
 
 - Käyttäjäsivu näyttää, montako reseptiä käyttäjä on lisännyt ja listan käyttäjän lisäämistä resepteistä.
 
-- Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun (esim. alkuruoka, intialainen, vegaaninen).
+- Käyttäjä pystyy valitsemaan reseptille yhden tai useamman luokittelun (esim. alkuruoka, pääruoka, gluteeniton, vegaaninen).
 
 - Käyttäjä pystyy antamaan reseptille kommentin ja arvosanan. Reseptistä näytetään kommentit ja keskimääräinen arvosana.
 <br><br>
