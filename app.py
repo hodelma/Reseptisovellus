@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
 import markupsafe
+import math
 
 import config
 import all_recipes
@@ -109,23 +110,46 @@ def delete_recipe(recipe_id):
 
 
 @app.route("/added_recipes", methods=["GET", "POST"])
-def added_recipes():
-    recipes = all_recipes.get_recipes()
-    return render_template("added_recipes.html", recipes=recipes)
+@app.route("/added_recipes/<int:page>", methods=["GET", "POST"])
+def added_recipes(page=1):
+    page_size = 10
+    recipe_count = all_recipes.recipe_count()
+    page_count = math.ceil(recipe_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/added_recipes/1")
+    
+    if page > page_count:
+        return redirect(f"/added_recipes/{page_count}")
+    
+    recipes = all_recipes.get_recipes(page, page_size)
+    return render_template("added_recipes.html", recipes=recipes, page=page, page_count=page_count)
 
 
 @app.route("/recipe/<int:recipe_id>")
-def show_recipe(recipe_id):
+def show_recipe(recipe_id, page=1):
     recipe = all_recipes.get_recipe(recipe_id)
 
     if not recipe:
         abort(404)
 
-    recipes = all_recipes.get_recipes()
+    page_size = 10
+    recipe_count = all_recipes.recipe_count()
+    page_count = math.ceil(recipe_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/recipe/{recipe_id}/1")
+    
+    if page > page_count:
+        return redirect(f"/recipe/{recipe_id}/{page_count}")
+    
+    recipes = all_recipes.get_recipes(page, page_size)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
     return render_template("added_recipes.html", recipe=recipe, recipes=recipes,
-    average_rating=average_rating, ratings_amount=ratings_amount)
+    average_rating=average_rating, ratings_amount=ratings_amount, page=page, page_count=page_count)
 
 @app.route("/register")
 def register():
@@ -190,12 +214,23 @@ def logout():
 
 
 @app.route("/search_recipe")
-def search():
+@app.route("/search_recipe/<int:page>")
+def search(page=1):
     recipe_query = request.args.get("recipe_query")
-    recipes = all_recipes.get_recipes()
     results = all_recipes.search_recipe(recipe_query) if recipe_query else []
+
+    page_size = 10
+    page_count = math.ceil(len(results) / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/search_recipe/1")
+    
+    if page > page_count:
+        return redirect(f"/search_recipe/{page_count}")
+    
     return render_template("added_recipes.html", recipe_query=recipe_query,
-                           results=results, recipes=recipes)
+                           results=results, page=page, page_count=page_count)
 
 
 @app.route("/add_comment", methods=["POST"])

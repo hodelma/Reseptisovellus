@@ -167,5 +167,17 @@
 
 {% endif %}
 
+{% if not recipe %}
+
+<p>
+  <a href="/added_recipes/{{ page - 1 }}">&lt;&lt;</a>
+  Page {{ page }}/{{ page_count }}
+  <a href="/added_recipes/{{ page + 1 }}">&gt;&gt;</a>
+</p>
+
+{% endif %}
+
+<hr />
+
 </body>
 </html>
