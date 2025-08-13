@@ -124,8 +124,8 @@ def show_recipe(recipe_id):
     recipes = all_recipes.get_recipes()
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
-    return render_template("added_recipes.html", recipe=recipe, recipes=recipes, average_rating=average_rating, ratings_amount=ratings_amount)
-
+    return render_template("added_recipes.html", recipe=recipe, recipes=recipes,
+    average_rating=average_rating, ratings_amount=ratings_amount)
 
 @app.route("/register")
 def register():
