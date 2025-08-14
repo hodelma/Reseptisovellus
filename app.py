@@ -1,3 +1,4 @@
+import secrets
 import sqlite3
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
@@ -25,6 +26,14 @@ def index():
     return render_template("index.html")
 
 
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+        
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
+
+
 @app.route("/add_recipe", methods=["GET", "POST"])
 def add_recipe():
     if "user_id" not in session:
@@ -32,6 +41,7 @@ def add_recipe():
         return redirect("/")
 
     if request.method == "POST":
+        check_csrf()
         instructions = request.form.get("instructions")
         title = request.form.get("title")
         type = request.form.get("type")
@@ -79,6 +89,7 @@ def edit_recipe(recipe_id):
         return render_template("edit_recipe.html", recipe=recipe)
 
     if request.method == "POST":
+        check_csrf()
         title = request.form["title"]
         instructions = request.form["instructions"]
 
@@ -109,6 +120,7 @@ def delete_recipe(recipe_id):
         return render_template("remove_recipe.html", recipe=recipe)
 
     if request.method == "POST":
+        check_csrf()
 
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
@@ -167,6 +179,7 @@ def register():
 
 @app.route("/create_account", methods=["POST"])
 def create_account():
+    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -205,6 +218,7 @@ def user_login():
         return render_template("login.html")
 
     if request.method == "POST":
+        check_csrf()
         username = request.form["username"]
         password = request.form["password"]
 
@@ -213,6 +227,7 @@ def user_login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
 
         flash("ERROR: Invalid username or password")
@@ -255,6 +270,7 @@ def add_comment():
         return redirect("/")
 
     if request.method == "POST":
+        check_csrf()
         comment = request.form.get("comment")
         recipe_id = request.form.get("recipe_id")
         rating = int(request.form.get("rating"))
@@ -300,6 +316,7 @@ def edit_comment(comment_id):
         return render_template("edit_comment.html", comment=comment)
 
     if request.method == "POST":
+        check_csrf()
         text = request.form["comment"]
         rating = int(request.form["rating"])
 
@@ -332,6 +349,7 @@ def delete_comment(comment_id):
         return render_template("remove_comment.html", comment=comment)
 
     if request.method == "POST":
+        check_csrf()
 
         if "continue" in request.form:
             all_recipes.remove_comment(comment_id)

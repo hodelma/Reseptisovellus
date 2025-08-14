@@ -2,14 +2,18 @@
 <html>
 
   <form action="/edit_mode/{{ recipe.id }}" method="post">
+
     <p>
         <label for="title">Recipe title:</label><br />
         <textarea name="title" id="title" rows="1" cols="70" maxlength="100" required>{{ recipe.title }}</textarea>
     </p>
+    
     <p>
       <b><label for="instructions">Edit recipe:</label><br />
         <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required>{{ recipe.instructions }} </textarea>
     </p>
+
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Finish editing" />
 
     <p>
@@ -17,6 +21,7 @@
         <button>Back</button>
         </a>
     </p>
+    
   </form>
 
 </html>

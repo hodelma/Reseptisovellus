@@ -85,6 +85,7 @@
       <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required></textarea>
     </p>
 
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Publish recipe" />
   </form>
 </body>
