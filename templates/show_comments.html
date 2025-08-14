@@ -47,6 +47,13 @@
 
     <a href="/recipe/{{ recipe.id }}"> Back </a>
 
+
+    <p>
+    <a href="/show_comments/{{ page - 1 }}">&lt;&lt;</a>
+    Page {{ page }}/{{ page_count }}
+    <a href="/show_comments/{{ page + 1 }}">&gt;&gt;</a>
+    </p>
+
 </body>
 
 </html>

@@ -288,14 +288,26 @@ def add_comment():
 
 
 @app.route("/show_comments/<int:recipe_id>")
-def show_comments(recipe_id):
+@app.route("/show_comments/<int:recipe_id>", methods=["GET", "POST"])
+def show_comments(recipe_id, page=1):
     recipe = all_recipes.get_recipe(recipe_id)
     comments = all_recipes.get_comments(recipe_id)
 
     if not recipe:
         abort(404)
 
-    return render_template("show_comments.html", recipe=recipe, comments=comments)
+    page_size = 10
+    comment_count = all_recipes.comment_count(recipe_id)
+    page_count = math.ceil(comment_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/show_comments/1")
+    
+    if page > page_count:
+        return redirect(f"/show_comments/{page_count}")
+
+    return render_template("show_comments.html", recipe=recipe, comments=comments, page=page, page_count=page_count)
 
 
 @app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])

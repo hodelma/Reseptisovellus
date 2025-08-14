@@ -5,6 +5,10 @@ def recipe_count():
     sql = "SELECT COUNT(*) FROM recipes"
     return db.query(sql)[0][0]
 
+def comment_count(recipe_id):
+    sql = "SELECT COUNT(*) FROM comments WHERE recipe_id = ?"
+    return db.query(sql, [recipe_id])[0][0]
+
 
 def get_recipes(page, page_size):
     sql = """SELECT recipes.id,
