@@ -1,9 +1,9 @@
+import math
 import secrets
 import sqlite3
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
 import markupsafe
-import math
 
 import config
 import all_recipes
@@ -139,11 +139,11 @@ def added_recipes(page=1):
     page_count = max(page_count, 1)
 
     if page < 1:
-        return redirect(f"/added_recipes/1")
-    
+        return redirect("/added_recipes/1")
+
     if page > page_count:
         return redirect(f"/added_recipes/{page_count}")
-    
+
     recipes = all_recipes.get_recipes(page, page_size)
     return render_template("added_recipes.html", recipes=recipes, page=page, page_count=page_count)
 
@@ -162,10 +162,10 @@ def show_recipe(recipe_id, page=1):
 
     if page < 1:
         return redirect(f"/recipe/{recipe_id}/1")
-    
+
     if page > page_count:
         return redirect(f"/recipe/{recipe_id}/{page_count}")
-    
+
     recipes = all_recipes.get_recipes(page, page_size)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
@@ -252,11 +252,11 @@ def search(page=1):
     page_count = max(page_count, 1)
 
     if page < 1:
-        return redirect(f"/search_recipe/1")
-    
+        return redirect("/search_recipe/1")
+
     if page > page_count:
         return redirect(f"/search_recipe/{page_count}")
-    
+
     return render_template("added_recipes.html", recipe_query=recipe_query,
                            results=results, page=page, page_count=page_count)
 
@@ -302,12 +302,13 @@ def show_comments(recipe_id, page=1):
     page_count = max(page_count, 1)
 
     if page < 1:
-        return redirect(f"/show_comments/1")
-    
+        return redirect("/show_comments/1")
+
     if page > page_count:
         return redirect(f"/show_comments/{page_count}")
 
-    return render_template("show_comments.html", recipe=recipe, comments=comments, page=page, page_count=page_count)
+    return render_template("show_comments.html", recipe=recipe, comments=comments,
+    page=page, page_count=page_count)
 
 
 @app.route("/edit_comment/<int:comment_id>", methods=["GET", "POST"])
