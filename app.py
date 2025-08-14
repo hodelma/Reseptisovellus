@@ -189,38 +189,40 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/create_account", methods=["POST"])
+@app.route("/create_account", methods=["GET", "POST"])
 def create_account():
-    username = request.form["username"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
+    if request.method == "POST":
+        username = request.form["username"]
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
 
-    if not username.strip():
-        flash("ERROR: Empty username")
-        return render_template("register.html", username=username)
+        if not username.strip():
+            flash("ERROR: Empty username")
+            return render_template("register.html", username=username)
 
-    if len(username) > 15:
-        abort(403)
+        if len(username) > 15:
+            abort(403)
 
-    if not password1 or len(password1) > 50 or len(password1) < 8:
-        abort(403)
+        if not password1 or len(password1) > 50 or len(password1) < 8:
+            abort(403)
 
-    if not password2 or len(password2) > 50 or len(password2) < 8:
-        abort(403)
+        if not password2 or len(password2) > 50 or len(password2) < 8:
+            abort(403)
 
-    if password1 != password2:
-        flash("ERROR: Passwords do not match")
-        return render_template("register.html", username=username)
+        if password1 != password2:
+            flash("ERROR: Passwords do not match")
+            return render_template("register.html", username=username)
 
-    try:
-        users.create_user(username, password1)
-        flash("You have registered successfully!")
+        try:
+            users.create_user(username, password1)
+            flash("You have registered successfully!")
 
-    except sqlite3.IntegrityError:
-        flash("ERROR: Username is already taken")
-        return render_template("register.html", username=username)
+        except sqlite3.IntegrityError:
+            flash("ERROR: Username is already taken")
+            return render_template("register.html", username=username)
 
-    return redirect("/")
+        return redirect("/")
+    return render_template("register.html")
 
 
 @app.route("/user_login", methods=["GET", "POST"])
