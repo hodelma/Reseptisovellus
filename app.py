@@ -29,7 +29,7 @@ def index():
 def check_csrf():
     if "csrf_token" not in request.form:
         abort(403)
-        
+
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
@@ -179,7 +179,6 @@ def register():
 
 @app.route("/create_account", methods=["POST"])
 def create_account():
-    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -218,7 +217,6 @@ def user_login():
         return render_template("login.html")
 
     if request.method == "POST":
-        check_csrf()
         username = request.form["username"]
         password = request.form["password"]
 
