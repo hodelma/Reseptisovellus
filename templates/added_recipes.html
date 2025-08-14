@@ -151,8 +151,16 @@
 {% for recipe in recipes %}
   <div>
     <div>
+
       <a href="/recipe/{{ recipe.id }}">
-        {{ recipe.title }}</a>
+        {{ recipe.title }}
+      </a>
+
+      <br>
+      <br>
+
+        From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
+      
     </div>
     <br>
 
