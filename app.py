@@ -37,7 +37,13 @@ def add_recipe():
         type = request.form.get("type")
         diet = request.form.get("diet")
 
-        if not title or len(title) > 100 or len(instructions) > 4500:
+        if not title or len(title) > 100:
+            abort(403)
+
+        if not instructions or len(instructions) > 4500:
+            abort(403)
+
+        if not type or not diet:
             abort(403)
 
         user_id = session["user_id"]
@@ -76,7 +82,10 @@ def edit_recipe(recipe_id):
         title = request.form["title"]
         instructions = request.form["instructions"]
 
-        if not title or len(title) > 100 or len(instructions) > 4500:
+        if not title or len(title) > 100:
+            abort(403)
+
+        if not instructions or len(instructions) > 4500:
             abort(403)
 
         all_recipes.edit_recipe(recipe_id, title, instructions)
@@ -167,6 +176,12 @@ def create_account():
         return render_template("register.html", username=username)
 
     if len(username) > 15:
+        abort(403)
+
+    if not password1 or len(password1) > 50 or len(password1) < 8:
+        abort(403)
+
+    if not password2 or len(password2) > 50 or len(password2) < 8:
         abort(403)
 
     if password1 != password2:
