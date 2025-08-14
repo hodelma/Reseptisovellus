@@ -13,38 +13,76 @@
 <body>
   <form action="/add_recipe" method="post">
 
-    <p>Recipe title:<br />
-    <input type="text" name="title" size="74" maxlength="100" required />
+    <p>
+      <b><label for="title">Recipe title:</label></b> <br />
+    <input type="text" name="title" id="title" size="74" maxlength="100" required />
     </p>
 
-    <p>Choose the dish type:</p>
+    <br>
 
     <p>
-      <input type="radio" name="type" value="1" required/> Starter / Appetizer
-      <input type="radio" name="type" value="2" required/> Snack
-      <input type="radio" name="type" value="3" required/> Main dish
-      <input type="radio" name="type" value="4" required/> Side dish
-      <input type="radio" name="type" value="5" required/> Breakfast
-      <input type="radio" name="type" value="6" required/> Lunch
-      <input type="radio" name="type" value="7" required/> Beverage
-      <input type="radio" name="type" value="8" required/> Dessert
+      <b>Choose the dish type:</b> <br> <br>
 
+      <input type="radio" name="type" id="type1" value="1" required/>
+      <label for="type1">Starter / Appetizer</label>
+
+      <input type="radio" name="type" id="type2" value="2" />
+      <label for="type2">Snack</label>
+
+      <input type="radio" name="type" id="type3" value="3" />
+      <label for="type3">Main dish</label>
+
+      <input type="radio" name="type" id="type4" value="4" />
+      <label for="type4">Side dish</label>
+
+      <input type="radio" name="type" id="type5" value="5" />
+      <label for="type5">Breakfast</label>
+
+      <input type="radio" name="type" id="type6" value="6" />
+      <label for="type6">Lunch</label>
+
+      <input type="radio" name="type" id="type7" value="7" />
+      <label for="type7">Beverage</label>
+
+      <input type="radio" name="type" id="type8" value="8" />
+      <label for="type8">Dessert</label>
     </p>
-    <p>Choose the diet preferences for the dish (optional):</p>
 
+    <br>
+    
     <p>
-      <input type="checkbox" name="diet" value="1" /> Non-vegetarian
-      <input type="checkbox" name="diet" value="2" /> Vegetarian
-      <input type="checkbox" name="diet" value="3" /> Vegan
-      <input type="checkbox" name="diet" value="4" /> Flexitarian
-      <input type="checkbox" name="diet" value="5" /> Pescatarian
-      <input type="checkbox" name="diet" value="6" /> Low-Carb
-      <input type="checkbox" name="diet" value="7" /> Gluten-Free
-      <input type="checkbox" name="diet" value="8" /> Lactose-Free
+      <b>Choose the diet preferences for the dish (optional):</b> <br> <br>
+
+      <input type="checkbox" name="diet" id="diet1" value="1" />
+      <label for="diet1">Non-vegetarian</label>
+
+      <input type="checkbox" name="diet" id="diet2" value="2" />
+      <label for="diet2">Vegetarian</label>
+
+      <input type="checkbox" name="diet" id="diet3" value="3" />
+      <label for="diet3">Vegan</label>
+
+      <input type="checkbox" name="diet" id="diet4" value="4" />
+      <label for="diet4">Flexitarian</label>
+
+      <input type="checkbox" name="diet" id="diet5" value="5" />
+      <label for="diet5">Pescatarian</label>
+
+      <input type="checkbox" name="diet" id="diet6" value="6" />
+      <label for="diet6">Low-Carb</label>
+
+      <input type="checkbox" name="diet" id="diet7" value="7" />
+      <label for="diet7">Gluten-Free</label>
+
+      <input type="checkbox" name="diet" id="diet8" value="8" />
+      <label for="diet8">Lactose-Free</label>
     </p>
 
-    <p>Write your recipe: <br />
-      <textarea name="instructions" rows="10" cols="70" maxlength="4500" required></textarea>
+    <br>
+    
+    <p>
+      <b><label for="instructions">Write your recipe:</label></b> <br />
+      <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required></textarea>
     </p>
 
     <input type="submit" value="Publish recipe" />

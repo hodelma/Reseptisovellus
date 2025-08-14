@@ -10,12 +10,12 @@
 
   <form action="/user_login" method="post">
     <p>
-      Username: <br />
-      <input type="text" name="username" value="{{ username or '' }}" required/>
+      <label for="username">Username:</label> <br />
+      <input type="text" name="username" id="username" value="{{ username or '' }}" required/>
     </p>
     <p>
-      Password: <br />
-      <input type="password" name="password" required/>
+      <label for="password">Password:</label> <br />
+      <input type="password" name="password" id="password" required/>
     </p>
     <input type="submit" value="Log in" />
   </form>
