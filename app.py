@@ -270,7 +270,7 @@ def search(page=1):
 
     if page > page_count:
         return redirect(f"/search_recipe/{page_count}")
-    
+
     results = all_recipes.search_recipe(recipe_query, page, page_size) if recipe_query else []
 
     return render_template("added_recipes.html", recipe_query=recipe_query,
@@ -321,7 +321,7 @@ def show_comments(recipe_id, page=0):
 
     if page > page_count:
         return redirect(f"/show_comments/{recipe_id}/{page_count}")
-    
+
     comments = all_recipes.get_comments(recipe_id, page, page_size)
 
     return render_template("show_comments.html", recipe=recipe, comments=comments,
