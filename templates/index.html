@@ -1,65 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Recipeland</title>
-</head>
+{% block title %} Recipeland {% endblock %}
 
+{% block content %}
 
-{% if session.user_id %}
-<p>
-  You are logged in as {{ session.username }}</a>
-</p>
-{% endif %}
+<br>
+<br>
+<br>
 
-<body>
+<p>In this app, you can share your favorite recipes and rate other users' recipes.</p>
+<p>You can also comment on other recipes and let people know your thoughts!</p>
 
-  {% for message in get_flashed_messages() %}
-  <div class="info">
-    {{ message }}
-  </div>
-  {% endfor %}
-
-  <h1>Welcome to Recipeland!</h1>
-  <p>
-    <br>
-    In this app, you can share your favorite recipes and rate other users' recipes.
-  </p>
-  <br>
-
-  {% if session.user_id %}
-
-    <a href="/add_recipe">
-      <button>Add a new recipe</button>
-    </a>
-
-  {% endif %}
-  
-  <br>
-  <br>
-  <a href="/added_recipes">
-    <button>Browse recipes</button>
-  <br>
-  <br>
-  </a>
-
-  {% if not session.user_id %}
-
-    <p>
-      <a href="/register">
-      Don't have an account yet? Create account</a>
-    </p>
-
-    <p>
-      <a href="/user_login">
-      Already have an account? Log in</a>
-
-  {% else %}
-
-    <a href="/logout">Log out</a>
-  </p>
-
-  {% endif %}
-</body>
-
-</html>
+{% endblock %}
