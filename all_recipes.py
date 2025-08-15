@@ -5,9 +5,15 @@ def recipe_count():
     sql = "SELECT COUNT(*) FROM recipes"
     return db.query(sql)[0][0]
 
+
 def comment_count(recipe_id):
     sql = "SELECT COUNT(*) FROM comments WHERE recipe_id = ?"
     return db.query(sql, [recipe_id])[0][0]
+
+
+def search_count(recipe_query):
+    sql = """SELECT COUNT(*) count FROM recipes WHERE title LIKE ?"""
+    return db.query(sql, ["%" + recipe_query + "%"])[0]
 
 
 def get_recipes(page, page_size):
@@ -56,14 +62,17 @@ def get_comment(comment_id):
     return result[0] if result else None
 
 
-def get_comments(recipe_id):
+def get_comments(recipe_id, page, page_size):
     sql = """SELECT comments.id, comments.comment_text,
                     comments.rating, comments.user_id,
                     users.username
             FROM comments
             JOIN users ON comments.user_id = users.id
-            WHERE comments.recipe_id = ?"""
-    result = db.query(sql, [recipe_id])
+            WHERE comments.recipe_id = ?
+            LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    result = db.query(sql, [recipe_id, limit, offset])
     return result
 
 
@@ -83,12 +92,15 @@ def remove_recipe(recipe_id):
     db.execute(sql, [recipe_id])
 
 
-def search_recipe(recipe_query):
+def search_recipe(recipe_query, page, page_size):
     sql = """SELECT recipes.id, recipes.title, users.username, recipes.user_id
             FROM recipes
             JOIN users ON recipes.user_id = users.id
-            WHERE recipes.title LIKE ?"""
-    return db.query(sql, ["%" + recipe_query + "%"])
+            WHERE recipes.title LIKE ?
+            LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, ["%" + recipe_query + "%", limit, offset])
 
 
 def add_comment(comment, recipe_id, user_id, rating):

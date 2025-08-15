@@ -144,7 +144,7 @@ def delete_recipe(recipe_id):
 
 @app.route("/added_recipes", methods=["GET", "POST"])
 @app.route("/added_recipes/<int:page>", methods=["GET", "POST"])
-def added_recipes(page=1):
+def added_recipes(page=0):
     page_size = 10
     recipe_count = all_recipes.recipe_count()
     page_count = math.ceil(recipe_count / page_size)
@@ -259,10 +259,10 @@ def logout():
 @app.route("/search_recipe/<int:page>")
 def search(page=1):
     recipe_query = request.args.get("recipe_query")
-    results = all_recipes.search_recipe(recipe_query) if recipe_query else []
+    search_count = all_recipes.search_count(recipe_query)
 
     page_size = 10
-    page_count = math.ceil(len(results) / page_size)
+    page_count = math.ceil(search_count["count"] / page_size)
     page_count = max(page_count, 1)
 
     if page < 1:
@@ -270,6 +270,8 @@ def search(page=1):
 
     if page > page_count:
         return redirect(f"/search_recipe/{page_count}")
+    
+    results = all_recipes.search_recipe(recipe_query, page, page_size) if recipe_query else []
 
     return render_template("added_recipes.html", recipe_query=recipe_query,
                            results=results, page=page, page_count=page_count)
@@ -302,10 +304,9 @@ def add_comment():
 
 
 @app.route("/show_comments/<int:recipe_id>")
-@app.route("/show_comments/<int:recipe_id>", methods=["GET", "POST"])
-def show_comments(recipe_id, page=1):
+@app.route("/show_comments/<int:recipe_id>/<int:page>")
+def show_comments(recipe_id, page=0):
     recipe = all_recipes.get_recipe(recipe_id)
-    comments = all_recipes.get_comments(recipe_id)
 
     if not recipe:
         abort(404)
@@ -316,10 +317,12 @@ def show_comments(recipe_id, page=1):
     page_count = max(page_count, 1)
 
     if page < 1:
-        return redirect("/show_comments/1")
+        return redirect(f"/show_comments/{recipe_id}/1")
 
     if page > page_count:
-        return redirect(f"/show_comments/{page_count}")
+        return redirect(f"/show_comments/{recipe_id}/{page_count}")
+    
+    comments = all_recipes.get_comments(recipe_id, page, page_size)
 
     return render_template("show_comments.html", recipe=recipe, comments=comments,
     page=page, page_count=page_count)
