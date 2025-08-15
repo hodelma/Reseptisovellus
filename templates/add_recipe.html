@@ -1,16 +1,11 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html>
+{% block title %} Add a recipe {% endblock %}
 
-<head>
-  <title>Add a recipe</title>
-</head>
+{% block content %}
 
-<a href="/">
-<button>Back to menu</button>
-</a>
+<a href="/" class="btn-menu">Back to menu</a>
 
-<body>
   <form action="/add_recipe" method="post">
 
     <p>
@@ -86,8 +81,7 @@
     </p>
 
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Publish recipe" />
+    <input type="submit" value="Publish recipe" class="btn-submit">
   </form>
-</body>
 
-</html>
+{% endblock %}
