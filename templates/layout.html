@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+  <div class="header">
+
+    <h1>Recipeland</h1>
+
+    {% if session.user_id %}
+
+      <p 
+      class="user-info">Logged in as {{ session.username }}
+      </p>
+
+    {% endif %}
+
+  </div>
+
+  <div class="nav">
+
+    <a href="/added_recipes" class="btn btn-browse">Browse recipes</a>
+
+    {% if session.user_id %}
+
+      <a href="/add_recipe" class="btn btn-add">Add a new recipe</a>
+      <a href="/logout" class="btn btn-logout">Log out</a>
+
+    {% else %}
+
+      <a href="/create_account" class="btn btn-register">Register</a>
+      <a href="/user_login" class="btn btn-login">Log in</a>
+
+    {% endif %}
+
+  </div>
+
+  {% for message in get_flashed_messages() %}
+
+    <div class="info">{{ message }}</div>
+
+  {% endfor %}
+
+  <div class="content">
+
+    {% block content %}
+
+    <p>In this app, you can share your favorite recipes and rate other users' recipes.</p>
+    <p>You can also comment on other recipes and let people know your thoughts!</p>
+
+    {% endblock %}
+    
+  </div>
+
+</body>
+</html>
