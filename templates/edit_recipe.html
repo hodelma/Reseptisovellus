@@ -1,27 +1,30 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-  <form action="/edit_mode/{{ recipe.id }}" method="post">
+{% block title %} Edit recipe {% endblock %}
 
-    <p>
-        <label for="title">Recipe title:</label><br />
-        <textarea name="title" id="title" rows="1" cols="70" maxlength="100" required>{{ recipe.title }}</textarea>
-    </p>
-    
-    <p>
-      <b><label for="instructions">Edit recipe:</label><br />
-        <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required>{{ recipe.instructions }} </textarea>
-    </p>
+{% block content %}
 
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Finish editing" />
+<form action="/edit_mode/{{ recipe.id }}" method="post">
 
-    <p>
-        <a href="/added_recipes">
-        <button>Back</button>
-        </a>
-    </p>
-    
-  </form>
+  <p>
+      <label for="title">Recipe title:</label><br />
+      <textarea name="title" id="title" rows="1" cols="70" maxlength="100" required>{{ recipe.title }}</textarea>
+  </p>
+  
+  <p>
+    <b><label for="instructions">Edit recipe:</label><br />
+      <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required>{{ recipe.instructions }} </textarea>
+  </p>
 
-</html>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Finish editing" class="btn-submit">
+
+  <p>
+      <a href="/added_recipes">
+      <button>Back</button>
+      </a>
+  </p>
+  
+</form>
+
+{% endblock %}

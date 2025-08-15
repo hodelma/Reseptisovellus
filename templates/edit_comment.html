@@ -1,42 +1,44 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
+{% block title %} Edit comment {% endblock %}
 
-  <form action="/edit_comment/{{ comment.id }}" method="post">
-    <p>
-      <label for="comment">Your comment:</label> <br />
-        <textarea name="comment" id="comment" rows="10" cols="70" maxlength="2000">{{ comment.comment_text }} </textarea>
-    </p>
+{% block content %}
 
-    <p>Edit rating:</p>
+<form action="/edit_comment/{{ comment.id }}" method="post">
+  <p>
+    <label for="comment">Your comment:</label> <br />
+      <textarea name="comment" id="comment" rows="10" cols="70" maxlength="2000">{{ comment.comment_text }} </textarea>
+  </p>
 
-    <p>
-      <input type="radio" name="rating" id="rating0" value="0" required/>
-      <label for="rating0">0</label>
+  <p>Edit rating:</p>
 
-      <input type="radio" name="rating" id="rating1" value="1" />
-      <label for="rating1">1</label>
+  <p>
+    <input type="radio" name="rating" id="rating0" value="0" required/>
+    <label for="rating0">0</label>
 
-      <input type="radio" name="rating" id="rating2" value="2" />
-      <label for="rating2">2</label>
+    <input type="radio" name="rating" id="rating1" value="1" />
+    <label for="rating1">1</label>
 
-      <input type="radio" name="rating" id="rating3" value="3" />
-      <label for="rating3">3</label>
+    <input type="radio" name="rating" id="rating2" value="2" />
+    <label for="rating2">2</label>
 
-      <input type="radio" name="rating" id="rating4" value="4" />
-      <label for="rating4">4</label>
+    <input type="radio" name="rating" id="rating3" value="3" />
+    <label for="rating3">3</label>
 
-      <input type="radio" name="rating" id="rating5" value="5" />
-      <label for="rating5">5</label>
-    </p>
+    <input type="radio" name="rating" id="rating4" value="4" />
+    <label for="rating4">4</label>
 
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Finish editing" />
+    <input type="radio" name="rating" id="rating5" value="5" />
+    <label for="rating5">5</label>
+  </p>
 
-    <p>
-        <a href="/show_comments">
-        <button>Back</button>
-        </a>
-    </p>
-  </form>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Finish editing" class="btn-submit">
 
-</html>
+  <p>
+      <a href="/show_comments">
+      <button>Back</button>
+      </a>
+  </p>
+</form>
+
+{% endblock %}
