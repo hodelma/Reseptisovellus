@@ -48,7 +48,6 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 
 <form action="/add_comment" method="post">
 
-{% if recipe.user_id == session.user_id %}
 <p>
 <label for="comment">Write your comment:</label> <br />
 <textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required></textarea>
@@ -78,8 +77,6 @@ Rate this recipe:
 
 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 <button type="submit">Send</button>
-
-{% endif %}
 
 <br>
 <br>
