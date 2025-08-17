@@ -40,7 +40,13 @@
 
   {% for message in get_flashed_messages() %}
 
-    <div class="info">{{ message }}</div>
+    {% if "ERROR" in message %}
+    <div class="error-info">{{ message }}</div>
+
+    {% else %}
+      <div class="user-info">{{ message }}</div>
+
+    {% endif %}
 
   {% endfor %}
 
