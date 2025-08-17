@@ -113,7 +113,7 @@ def edit_recipe(recipe_id):
 
         all_recipes.edit_recipe(recipe_id, title, instructions)
 
-        return redirect("/added_recipes")
+        return redirect(f"/recipe/{recipe_id}")
 
     return render_template("edit_recipe.html")
 

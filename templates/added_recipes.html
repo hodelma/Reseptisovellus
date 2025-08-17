@@ -37,6 +37,15 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 {{ recipe.instructions | show_lines }}
 </p>
 
+{% if recipe.user_id == session.user_id %}
+
+<p>
+<a href="/edit_mode/{{ recipe.id }}" class="btn-submit">Edit recipe</a>
+<a href="/remove_mode/{{ recipe.id }}" class="btn-submit">Remove recipe</a>
+</p>
+
+{% endif %}
+
 <form action="/add_comment" method="post">
 
 {% if recipe.user_id == session.user_id %}
@@ -155,14 +164,6 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
 
 </div>
 <br>
-
-{% if recipe.user_id == session.user_id %}
-<p>
-<a href="/edit_mode/{{ recipe.id }}">Edit</a> |
-<a href="/remove_mode/{{ recipe.id }}">Delete</a>
-</p>
-
-{% endif %}
 
 <hr>
 </div>
