@@ -136,8 +136,11 @@ def delete_recipe(recipe_id):
 
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
+            return redirect("/added_recipes")
+    
+        if "cancel" in request.form:
+            return redirect(f"/recipe/{recipe_id}")
 
-        return redirect("/added_recipes")
 
     return render_template("remove_recipe.html")
 
@@ -341,7 +344,7 @@ def edit_comment(comment_id):
     recipe_id = comment["recipe_id"]
 
     if request.method == "GET":
-        return render_template("edit_comment.html", comment=comment)
+        return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
     if request.method == "POST":
         check_csrf()
