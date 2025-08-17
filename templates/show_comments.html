@@ -1,59 +1,53 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
+{% block title %} Browse comments {% endblock %}
 
-<head>
-  <title> Browse comments </title>
-</head>
+{% block content %}
 
-<body>
+<h1>{{ recipe.title }}</h1>
 
-    <h1>{{ recipe.title }}</h1>
+<h2>Comments</h2>
 
-    <h2>Comments</h2>
+{% if comments %}
 
-    {% if comments %}
+{% for comment in comments %}
+    <hr/>
 
-    {% for comment in comments %}
-        <hr/>
+<p>
+    <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> rated this recipe {{ comment.rating }} / 5
+</p>
 
-    <p>
-        <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a> rated this recipe {{ comment.rating }} / 5
-    </p>
-
-    <p>
-        {{ comment.comment_text }}
-        
-        
-        {% if comment.user_id == session.user_id %}
-
-        <p>
-            <a href="/edit_comment/{{ comment.id }}">Edit</a> |
-            <a href="/remove_comment/{{ comment.id }}">Delete</a>
-        </p>
-
-        {% endif %}
-            
-        </p>
-
-        {% endfor %}
-        <hr/>
+<p>
+    {{ comment.comment_text }}
     
-    {% else %}
+    
+    {% if comment.user_id == session.user_id %}
 
-        <p>No comments added yet.</p>
-        <hr/>
+    <p>
+        <a href="/edit_comment/{{ comment.id }}">Edit</a> |
+        <a href="/remove_comment/{{ comment.id }}">Delete</a>
+    </p>
 
     {% endif %}
-
-    <a href="/recipe/{{ recipe.id }}"> Back </a>
-
-
-    <p>
-    <a href="/show_comments/{{ page - 1 }}">&lt;&lt;</a>
-    Page {{ page }}/{{ page_count }}
-    <a href="/show_comments/{{ page + 1 }}">&gt;&gt;</a>
+        
     </p>
 
-</body>
+    {% endfor %}
+    <hr/>
 
-</html>
+{% else %}
+
+    <p>No comments added yet.</p>
+    <hr/>
+
+{% endif %}
+
+<a href="/recipe/{{ recipe.id }}"> Back </a>
+
+
+<p>
+<a href="/show_comments/{{ recipe.id }}/{{ page - 1 }}">&lt;&lt;</a>
+Page {{ page }}/{{ page_count }}
+<a href="/show_comments/{{ recipe.id }}/{{ page + 1 }}">&gt;&gt;</a>
+</p>
+
+{% endblock %}

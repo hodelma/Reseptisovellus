@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>User {{ user.username }}</title>
-</head>
+{% block title %} User profile {% endblock %}
 
-<body>
+{% block content %}
 
     <h1>User {{ user.username }}</h1>
 
@@ -14,14 +11,13 @@
     </p>
 
     <h2>Recipes</h2>
-    <ul>
 
       {% for recipe in recipes %}
 
       <li> <a href="/recipe/{{ recipe.id }}">{{ recipe.title }} </a> </li>
+      <br>
 
       {% endfor %}
-    </ul>
 
     <p>
       <a href="/added_recipes">
@@ -29,6 +25,4 @@
       </a>
     </p>
 
-</body>
-
-</html>
+{% endblock %}
