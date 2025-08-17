@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
+{% block title %} Remove comment {% endblock %}
 
-  <form action="/remove_comment/{{ comment.id }}" method="post">
+{% block content %}
 
-    <p>
-      Are you sure you want to delete this comment?
-    </p>
-    
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" name="continue" value="Continue" />
-    <input type="submit" name="cancel" value="Cancel" />
-  </form>
+<form action="/remove_comment/{{ comment.id }}" method="post">
 
-</html>
+  <p>
+    Are you sure you want to delete this comment?
+  </p>
+  
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Continue" class="btn-submit">
+  <input type="submit" value="Cancel" class="btn-submit">
+</form>
+
+{% endblock %}
