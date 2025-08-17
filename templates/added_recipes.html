@@ -1,206 +1,190 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Browse recipes</title>
-</head>
+{% block title %} Browse recipes {% endblock %}
 
-<body>
-
-<a href="/">
-<button>Back to menu</button>
-</a>
+{% block content %}
 
 {% if recipe %}
 
-  <br>
-  <br>
+<br>
+<br>
 
-  <a href="/added_recipes">
-  <button>Back</button>
-  </a>
+<h1>{{ recipe.title }}</h1>
 
-  <h1>{{ recipe.title }}</h1>
+{% if average_rating %}
 
-  {% if average_rating %}
+<p>
+Average rating: {{ average_rating }} ({{ ratings_amount }} ratings)
+</p>
 
-  <p>
-    Average rating: {{ average_rating }} ({{ ratings_amount }} ratings)
-  </p>
+{% else %}
 
-  {% else %}
+<p>
+No ratings yet.
+</p>
 
-    <p>
-      No ratings yet.
-    </p>
+{% endif %}
 
-  {% endif %}
+<p>
+From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+</p>
 
-  <p>
-    From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
-  </p>
+<p>
+<i>{{ recipe.type }}, {{ recipe.diet }}</i>
+</p>
 
-  <p>
-    <i>{{ recipe.type }}, {{ recipe.diet }}</i>
-  </p>
+<p>
+{{ recipe.instructions | show_lines }}
+</p>
 
-  <p>
-  {{ recipe.instructions | show_lines }}
-  </p>
+<form action="/add_comment" method="post">
 
-  <form action="/add_comment" method="post">
+{% if recipe.user_id == session.user_id %}
+<p>
+<label for="comment">Write your comment:</label> <br />
+<textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required></textarea>
+<input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
+</p>
 
-  {% if recipe.user_id == session.user_id %}
-  <p>
-    <label for="comment">Write your comment:</label> <br />
-    <textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required></textarea>
-    <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
-  </p>
+<p>
+Rate this recipe:
+<input type="radio" name="rating" id="rating0" value="0" required/>
+<label for="rating0">0</label>
 
-  <p>
-    Rate this recipe:
-    <input type="radio" name="rating" id="rating0" value="0" required/>
-    <label for="rating0">0</label>
+<input type="radio" name="rating" id="rating1" value="1" />
+<label for="rating1">1</label>
 
-    <input type="radio" name="rating" id="rating1" value="1" />
-    <label for="rating1">1</label>
+<input type="radio" name="rating" id="rating2" value="2" />
+<label for="rating2">2</label>
 
-    <input type="radio" name="rating" id="rating2" value="2" />
-    <label for="rating2">2</label>
+<input type="radio" name="rating" id="rating3" value="3" />
+<label for="rating3">3</label>
 
-    <input type="radio" name="rating" id="rating3" value="3" />
-    <label for="rating3">3</label>
+<input type="radio" name="rating" id="rating4" value="4" />
+<label for="rating4">4</label>
 
-    <input type="radio" name="rating" id="rating4" value="4" />
-    <label for="rating4">4</label>
+<input type="radio" name="rating" id="rating5" value="5" />
+<label for="rating5">5</label>
+</p>
 
-    <input type="radio" name="rating" id="rating5" value="5" />
-    <label for="rating5">5</label>
-  </p>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+<button type="submit">Send</button>
 
-  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <button type="submit">Send</button>
+{% endif %}
 
-  {% endif %}
+<br>
+<br>
 
-  <br>
-  <br>
+<a href="/show_comments/{{ recipe.id }}">Browse comments</a>
 
-  <a href="/show_comments/{{ recipe.id }}">Browse comments</a>
-
-  </form>
+</form>
 
 {% else %}
 
 <form action="/search_recipe" method="get">
   
-  <p>
-    Search for:
-    {% if recipe_query %}
+<p>
+<label for="recipe_query">Search for:</label>
+{% if recipe_query %}
 
-    <input type="text" name="recipe_query" value="{{ recipe_query }}" />
+<input type="text" name="recipe_query" id="recipe_query" value="{{ recipe_query }}" />
 
-    {% else %}
+{% else %}
 
-    <input type="text" name="recipe_query" /> <input type="submit" value="Search" />
+<input type="text" name="recipe_query" id="recipe_query"/> <input type="submit" value="Search" class="btn-submit"> />
 
-    {% endif %}
-  </p>
+{% endif %}
+</p>
 
 </form>
 
 {% if recipe_query %}
 
-<a href="/added_recipes">
-<button>Back</button>
-</a>
+<a href="/added_recipes" class="btn">Back</a>
 
 <h2>Search results:</h2>
 
 {% if results %}
 
-  <ul>
+<ul>
 
-  {% for result in results %}
+{% for result in results %}
 
-      <a href="/recipe/{{ result.id }}">
-        {{ result.title }}
-      </a>
-      
-      <p>
-        From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a>
-      </p>
+<a href="/recipe/{{ result.id }}">
+{{ result.title }}
+</a>
 
-      <hr>
+<p>
+From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a>
+</p>
 
-      <br>
+<hr>
 
-  {% endfor %}
+<br>
 
-  </ul>
+{% endfor %}
+
+</ul>
 
 {% else %}
 
-  <p>No results found.</p>
-  
+<p>No results found.</p>
+
 {% endif %}
 
 {% elif not recipe_query %}
+
+<a href="/" class="btn-menu">Back to menu</a>
 
 <h1>Recipe bank</h1>
 
 {% if recipes %}
 
 {% for recipe in recipes %}
-  <div>
-    <div>
+<div>
+<div>
 
-      <a href="/recipe/{{ recipe.id }}">
-        {{ recipe.title }}
-      </a>
+<a href="/recipe/{{ recipe.id }}">
+{{ recipe.title }}
+</a>
 
-      <br>
-      <br>
+<br>
+<br>
 
-        From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
-      
-    </div>
-    <br>
+From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
 
-    {% if recipe.user_id == session.user_id %}
-    <p>
-      <a href="/edit_mode/{{ recipe.id }}">Edit</a> |
-      <a href="/remove_mode/{{ recipe.id }}">Delete</a>
-    </p>
+</div>
+<br>
 
-    {% endif %}
-
-    <hr>
-  </div>
-  
-{% endfor %}
-
-{% else %}
-
-  <p>No added recipes yet.</p>
-
-{% endif %}
-
-{% endif %}
-
-{% endif %}
-
-{% if not recipe %}
-
+{% if recipe.user_id == session.user_id %}
 <p>
-  <a href="/added_recipes/{{ page - 1 }}">&lt;&lt;</a>
-  Page {{ page }}/{{ page_count }}
-  <a href="/added_recipes/{{ page + 1 }}">&gt;&gt;</a>
+<a href="/edit_mode/{{ recipe.id }}">Edit</a> |
+<a href="/remove_mode/{{ recipe.id }}">Delete</a>
 </p>
 
 {% endif %}
 
-<hr />
+<hr>
+</div>
 
-</body>
-</html>
+{% endfor %}
+
+{% else %}
+
+<p>No added recipes yet.</p>
+
+{% endif %}
+
+{% endif %}
+
+<p>
+<a href="/search_recipe/{{ page - 1 }}?recipe_query={{ recipe_query }}">&lt;&lt;</a>
+Page {{ page }}/{{ page_count }}
+<a href="/search_recipe/{{ page + 1 }}?recipe_query={{ recipe_query }}">&gt;&gt;</a>
+</p>
+
+{% endif %}
+
+{% endblock %}
+
+<hr />
