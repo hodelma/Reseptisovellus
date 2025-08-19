@@ -137,7 +137,7 @@ def delete_recipe(recipe_id):
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
             return redirect("/added_recipes")
-    
+
         if "cancel" in request.form:
             return redirect(f"/recipe/{recipe_id}")
 
