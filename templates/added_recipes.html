@@ -33,8 +33,8 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 <i>{{ recipe.type }}, {{ recipe.diet }}</i>
 </p>
 
-<p>
-{{ recipe.instructions | show_lines }}
+<p class="recipe-instructions">
+  {{ recipe.instructions | show_lines }}
 </p>
 
 {% if recipe.user_id == session.user_id %}

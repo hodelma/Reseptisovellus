@@ -129,3 +129,9 @@ body {
   font-size: 16px;
   cursor: pointer;
 }
+
+.recipe-instructions {
+    overflow-wrap: break-word;
+    margin: auto;
+    max-width: 700px;
+}
