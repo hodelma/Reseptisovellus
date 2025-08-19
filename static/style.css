@@ -40,6 +40,8 @@ body {
 
 .content {
     text-align: center;
+    max-width: 700px;
+    margin: auto;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
 }
@@ -133,5 +135,11 @@ body {
 .recipe-instructions {
     overflow-wrap: break-word;
     margin: auto;
+    text-align: center;
     max-width: 700px;
+}
+
+.search-results {
+    text-align: center;
+    padding-left: 0;
 }
