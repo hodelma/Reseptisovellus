@@ -112,6 +112,7 @@ def edit_recipe(recipe_id):
             abort(403)
 
         all_recipes.edit_recipe(recipe_id, title, instructions)
+        flash("Successfully edited recipe!")
 
         return redirect(f"/recipe/{recipe_id}")
 
@@ -136,6 +137,7 @@ def delete_recipe(recipe_id):
 
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
+            flash("Successfully removed recipe!")
             return redirect("/added_recipes")
 
         if "cancel" in request.form:
