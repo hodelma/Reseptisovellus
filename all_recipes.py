@@ -23,16 +23,29 @@ def get_recipes(page, page_size):
                     types.title type,
                     diets.title diet,
                     users.id user_id,
-                    users.username
+                    users.username,
+                    GROUP_CONCAT(diets.title, ", ") diets
             FROM recipes
             JOIN types ON recipes.type_id = types.id
-            JOIN diets ON recipes.diet_id = diets.id
             JOIN users ON recipes.user_id = users.id
+            LEFT JOIN connect_recipe_diets ON recipes.id = connect_recipe_diets.recipe_id
+            LEFT JOIN diets ON connect_recipe_diets.diet_id = diets.id
+            GROUP BY recipes.id
             ORDER BY recipes.id
             LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
     return db.query(sql, [limit, offset])
+
+
+def get_types():
+    sql = "SELECT id, title FROM types ORDER BY id"
+    return db.query(sql)
+
+
+def get_diets():
+    sql = "SELECT id, title FROM diets ORDER BY id"
+    return db.query(sql)
 
 
 def get_recipe(recipe_id):
@@ -42,14 +55,18 @@ def get_recipe(recipe_id):
                     types.title type,
                     diets.title diet,
                     users.id user_id, 
-                    users.username
+                    users.username,
+                    GROUP_CONCAT(diets.title, ", ") diets
             FROM recipes
             JOIN types ON recipes.type_id = types.id
-            JOIN diets ON recipes.diet_id = diets.id
             JOIN users ON recipes.user_id = users.id
-            WHERE recipes.id = ?"""
+            LEFT JOIN connect_recipe_diets ON recipes.id = connect_recipe_diets.recipe_id
+            LEFT JOIN diets ON diets.id = connect_recipe_diets.diet_id
+            WHERE recipes.id = ?
+            GROUP BY recipes.id"""
     result = db.query(sql, [recipe_id])
     return result[0] if result else None
+
 
 def get_comment(comment_id):
     sql = """SELECT comments.id, comments.comment_text,
@@ -76,18 +93,38 @@ def get_comments(recipe_id, page, page_size):
     return result
 
 
-def add_recipe(title, instructions, type_id, diet_id, user_id):
-    sql = """INSERT INTO recipes (title, instructions, type_id, diet_id, user_id)
-    VALUES (?, ?, ?, ?, ?)"""
-    db.execute(sql, (title, instructions, type_id, diet_id, user_id))
+def add_recipe(title, instructions, type_id, diets, user_id):
+    sql = """INSERT INTO recipes (title, instructions, type_id, user_id)
+            VALUES (?, ?, ?, ?)"""
+    db.execute(sql, (title, instructions, type_id, user_id))
+    
+    recipe_id = db.last_insert_id()
+
+    sql= """INSERT INTO connect_recipe_diets (recipe_id, diet_id) VALUES (?, ?)"""
+
+    for diet_id in diets:
+        db.execute(sql, (recipe_id, diet_id))
 
 
-def edit_recipe(recipe_id, title, instructions):
+def edit_recipe(recipe_id, title, instructions, diets):
     sql = """UPDATE recipes SET title = ?, instructions = ? WHERE id = ?"""
     db.execute(sql, [title, instructions, recipe_id])
 
+    sql = """DELETE FROM connect_recipe_diets WHERE recipe_id = ?"""
+    db.execute(sql, [recipe_id])
+
+    sql = """INSERT INTO connect_recipe_diets (recipe_id, diet_id) VALUES (?, ?)"""
+    for diet_id in diets:
+        db.execute(sql, [recipe_id, diet_id])
+
 
 def remove_recipe(recipe_id):
+    sql = """DELETE FROM connect_recipe_diets WHERE recipe_id = ?"""
+    db.execute(sql, [recipe_id])
+
+    sql = """DELETE FROM comments WHERE recipe_id = ?"""
+    db.execute(sql, [recipe_id])
+
     sql = """DELETE FROM recipes WHERE id = ?"""
     db.execute(sql, [recipe_id])
 

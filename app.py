@@ -57,7 +57,7 @@ def add_recipe():
         instructions = request.form.get("instructions")
         title = request.form.get("title")
         type = request.form.get("type")
-        diet = request.form.get("diet")
+        diets_id = request.form.getlist("diet")
 
         if not title or len(title) > 100:
             abort(403)
@@ -65,15 +65,18 @@ def add_recipe():
         if not instructions or len(instructions) > 4500:
             abort(403)
 
-        if not type or not diet:
+        if not type or not diets_id:
             abort(403)
 
         user_id = session["user_id"]
-        all_recipes.add_recipe(title, instructions, type, diet, user_id)
+        all_recipes.add_recipe(title, instructions, type, diets_id, user_id)
 
         return redirect("/added_recipes")
+    
+    types = all_recipes.get_types()
+    diets = all_recipes.get_diets()
 
-    return render_template("add_recipe.html")
+    return render_template("add_recipe.html", types=types, diets=diets)
 
 
 @app.route("/user/<int:user_id>")
@@ -104,6 +107,7 @@ def edit_recipe(recipe_id):
         check_csrf()
         title = request.form["title"]
         instructions = request.form["instructions"]
+        diets = request.form.getlist("diet")
 
         if not title or len(title) > 100:
             abort(403)
@@ -111,7 +115,7 @@ def edit_recipe(recipe_id):
         if not instructions or len(instructions) > 4500:
             abort(403)
 
-        all_recipes.edit_recipe(recipe_id, title, instructions)
+        all_recipes.edit_recipe(recipe_id, title, instructions, diets)
         flash("Successfully edited recipe!")
 
         return redirect(f"/recipe/{recipe_id}")
