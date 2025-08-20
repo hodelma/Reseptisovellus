@@ -6,7 +6,8 @@
 <form action="/edit_comment/{{ comment.id }}" method="post">
   <p>
     <label for="comment">Your comment:</label> <br />
-      <textarea name="comment" id="comment" rows="10" cols="70" maxlength="2000" required>{{ comment.comment_text }} </textarea>
+      <textarea name="comment" id="comment" rows="10" cols="70" minlength="10" maxlength="2000" 
+      required> {{ comment.comment_text }} </textarea>
   </p>
 
   <p>Edit rating:</p>
@@ -50,7 +51,7 @@
   </p>
 
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <input type="submit" value="Finish editing" class="btn-submit">
+  <input type="submit" value="Finish editing" class="btn">
 
   <p>
     <a href="/show_comments/{{ recipe_id }}" class="btn">Back</a>
