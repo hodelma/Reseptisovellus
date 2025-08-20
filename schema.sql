@@ -9,8 +9,7 @@ CREATE TABLE recipes (
     title TEXT,
     instructions TEXT,
     user_id INTEGER REFERENCES users,
-    type_id INTEGER REFERENCES types,
-    diet_id INTEGER REFERENCES diets
+    type_id INTEGER REFERENCES types
 );
 
 CREATE TABLE types (
@@ -36,13 +35,7 @@ CREATE TABLE connect_recipe_diets (
     diet_id INTEGER REFERENCES diets
 );
 
-CREATE TABLE connect_recipe_types (
-    recipe_id INTEGER REFERENCES recipes,
-    type_id INTEGER REFERENCES types
-);
-
 CREATE INDEX idx_recipes_type_id ON recipes(type_id);
-CREATE INDEX idx_recipes_diet_id ON recipes(diet_id);
 CREATE INDEX idx_recipes_title ON recipes(title);
 CREATE INDEX idx_comments_recipe_id ON comments(recipe_id);
 CREATE INDEX idx_comments_user_id ON comments(user_id);
