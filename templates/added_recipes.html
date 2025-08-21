@@ -191,16 +191,36 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
 
 {% if recipe_query %}
 
+  {% if page > 1 %}
+
     <a href="/search_recipe/{{ page - 1 }}?recipe_query={{ recipe_query }}">&lt;&lt;</a>
-    Page {{ page }}/{{ page_count }}
+
+  {% endif %}
+
+  Page {{ page }}/{{ page_count }}
+
+  {% if page < page_count %}
+
     <a href="/search_recipe/{{ page + 1 }}?recipe_query={{ recipe_query }}">&gt;&gt;</a>
+
+  {% endif %}
 
 {% else %}
 
-  <a href="/added_recipes/{{ page - 1 }}">&lt;&lt;</a>
-  Page {{ page }}/{{ page_count }}
-  <a href="/added_recipes/{{ page + 1 }}">&gt;&gt;</a>
+  {% if page > 1 %}
 
+    <a href="/added_recipes/{{ page - 1 }}">&lt;&lt;</a>
+
+  {% endif %}
+
+  Page {{ page }}/{{ page_count }}
+
+  {% if page < page_count %}
+
+    <a href="/added_recipes/{{ page + 1 }}">&gt;&gt;</a>
+
+  {% endif %}
+  
 {% endif %}
 
 </p>

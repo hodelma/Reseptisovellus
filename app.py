@@ -267,12 +267,17 @@ def logout():
 @app.route("/search_recipe")
 @app.route("/search_recipe/<int:page>")
 def search(page=1):
-    recipe_query = request.args.get("recipe_query")
-    search_count = all_recipes.search_count(recipe_query)
-
+    recipe_query = request.args.get("recipe_query", "").strip()
     page_size = 10
+
+    if not recipe_query:
+        flash("Entry can't be empty")
+        return redirect(f"/added_recipes/{page}")
+    
+    search_count = all_recipes.search_count(recipe_query)
     page_count = math.ceil(search_count["count"] / page_size)
     page_count = max(page_count, 1)
+    results = all_recipes.search_recipe(recipe_query, page, page_size)
 
     if page < 1:
         return redirect("/search_recipe/1")
@@ -280,7 +285,6 @@ def search(page=1):
     if page > page_count:
         return redirect(f"/search_recipe/{page_count}")
 
-    results = all_recipes.search_recipe(recipe_query, page, page_size) if recipe_query else []
 
     return render_template("added_recipes.html", recipe_query=recipe_query,
                            results=results, page=page, page_count=page_count)
