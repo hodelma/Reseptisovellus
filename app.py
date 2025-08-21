@@ -58,12 +58,18 @@ def add_recipe():
         title = request.form.get("title")
         type = int(request.form.get("type"))
         diets_id = request.form.getlist("diet")
+        types = all_recipes.get_types()
+        diets = all_recipes.get_diets()
 
-        if not title or len(title) > 100:
-            abort(403)
+        if not title.strip() or len(title) > 100:
+            flash("Title cannot be empty or over 100 characters")
+            return render_template("add_recipe.html", title=title, instructions=instructions,
+            type=type, types=types, diets=diets, diets_id=diets_id)
 
-        if not instructions or len(instructions) > 4500:
-            abort(403)
+        if not instructions.strip() or len(instructions) > 4500:
+            flash("Instructions cannot be empty or over 4500 characters")
+            return render_template("add_recipe.html", title=title, instructions=instructions,
+            type=type, types=types, diets=diets, diets_id=diets_id)
 
         if not type:
             abort(403)
