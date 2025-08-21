@@ -30,7 +30,15 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 </p>
 
 <p>
-<i>{{ recipe.type }}, {{ recipe.diets }}</i>
+  {% if recipe.type and recipe.diets %}
+
+    <i>{{ recipe.type }}, {{ recipe.diets }}</i>
+
+  {% else %}
+
+    <i>{{ recipe.type }}</i>
+    
+  {% endif %}
 </p>
 
 <p class="recipe-instructions">
