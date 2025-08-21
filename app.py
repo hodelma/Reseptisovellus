@@ -65,7 +65,7 @@ def add_recipe():
         if not instructions or len(instructions) > 4500:
             abort(403)
 
-        if not type or not diets_id:
+        if not type:
             abort(403)
 
         user_id = session["user_id"]
