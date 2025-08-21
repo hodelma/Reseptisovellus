@@ -10,7 +10,7 @@
 
     <p>
       <b><label for="title">Recipe title:</label></b> <br />
-    <input type="text" name="title" id="title" size="74" maxlength="100" required />
+    <input type="text" name="title" id="title" size="74" maxlength="100" value="{{ title }}" required />
     </p>
 
     <br>
@@ -21,10 +21,13 @@
     <br>
     <br>
 
-    {% for type in types %}
+    {% for t in types %}
 
-      <input type="radio" name="type" id="type{{ type.id }}" value="{{ type.id }}" required>
-      <label for="type{{ type.id }}">{{ type.title }}</label>
+      <input type="radio" name="type" id="type{{ t.id }}" value="{{ t.id }}" required
+      {% if t.id == type %}
+      checked
+      {% endif %}>
+      <label for="type{{ t.id }}">{{ t.title }}</label>
 
       <br>
       
@@ -41,7 +44,10 @@
 
     {% for diet in diets %}
 
-      <input type="checkbox" name="diet" id="diet{{ diet.id }}" value="{{ diet.id }}">
+      <input type="checkbox" name="diet" id="diet{{ diet.id }}" value="{{ diet.id }}"
+      {% if diet.id|string in diets_id %}
+      checked
+      {% endif %}>
       <label for="diet{{ diet.id }}">{{ diet.title }}</label>
 
       <br>
@@ -53,7 +59,7 @@
     
     <p>
       <b><label for="instructions">Write your recipe:</label></b> <br />
-      <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required></textarea>
+      <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required>{{ instructions }}</textarea>
     </p>
 
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />

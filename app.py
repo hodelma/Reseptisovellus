@@ -56,7 +56,7 @@ def add_recipe():
         check_csrf()
         instructions = request.form.get("instructions")
         title = request.form.get("title")
-        type = request.form.get("type")
+        type = int(request.form.get("type"))
         diets_id = request.form.getlist("diet")
 
         if not title or len(title) > 100:
@@ -231,8 +231,6 @@ def create_account():
             return render_template("register.html", username=username)
 
         return redirect("/")
-    return render_template("register.html")
-
 
 @app.route("/user_login", methods=["GET", "POST"])
 def user_login():
