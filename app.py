@@ -51,36 +51,41 @@ def add_recipe():
     if "user_id" not in session:
         flash("You need to log in to add a recipe")
         return redirect("/")
-
-    if request.method == "POST":
-        check_csrf()
-        instructions = request.form.get("instructions")
-        title = request.form.get("title")
-        type = int(request.form.get("type"))
-        diets_id = request.form.getlist("diet")
-        types = all_recipes.get_types()
-        diets = all_recipes.get_diets()
-
-        if not title.strip() or len(title) > 100:
-            flash("Title cannot be empty or over 100 characters")
-            return render_template("add_recipe.html", title=title, instructions=instructions,
-            type=type, types=types, diets=diets, diets_id=diets_id)
-
-        if not instructions.strip() or len(instructions) > 4500:
-            flash("Instructions cannot be empty or over 4500 characters")
-            return render_template("add_recipe.html", title=title, instructions=instructions,
-            type=type, types=types, diets=diets, diets_id=diets_id)
-
-        if not type:
-            abort(403)
-
-        user_id = session["user_id"]
-        all_recipes.add_recipe(title, instructions, type, diets_id, user_id)
-
-        return redirect("/added_recipes")
     
     types = all_recipes.get_types()
     diets = all_recipes.get_diets()
+
+    if request.method == "POST":
+        check_csrf()
+        instructions = request.form.get("instructions", "").strip()
+        title = request.form.get("title", "").strip()
+        type = int(request.form.get("type"))
+        diets_id = request.form.getlist("diet")
+
+        errors = []
+
+        if not title or len(title) > 100:
+            errors.append("ERROR: Title cannot be empty or over 100 characters")
+
+        if not instructions or len(instructions) > 4500:
+            errors.append("ERROR: Instructions cannot be empty or over 4500 characters")
+
+        if not type:
+            errors.append("ERROR: Recipe type is required")
+
+        if errors:
+
+            for error in errors:
+                flash(error)
+            
+            return render_template("add_recipe.html", title=title, instructions=instructions,
+            type=type, types=types, diets=diets, diets_id=diets_id)
+
+        user_id = session["user_id"]
+
+        all_recipes.add_recipe(title, instructions, type, diets_id, user_id)
+        flash("Recipe added successfully!")
+        return redirect("/added_recipes")
 
     return render_template("add_recipe.html", types=types, diets=diets)
 
@@ -106,27 +111,49 @@ def edit_recipe(recipe_id):
     if recipe["user_id"] != session["user_id"]:
         abort(403)
 
+    types = all_recipes.get_types()
+    diets = all_recipes.get_diets()
+
+    type = recipe["type_id"]
+
+    if recipe["diet_id"]:
+        diets_id = [int(diet) for diet in recipe["diet_id"].split(",")]
+
     if request.method == "GET":
-        return render_template("edit_recipe.html", recipe=recipe)
+        return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets, 
+        type=type, diets_id=diets_id)
 
     if request.method == "POST":
         check_csrf()
-        title = request.form["title"]
-        instructions = request.form["instructions"]
-        diets = request.form.getlist("diet")
+        title = request.form.get("title", "").strip()
+        instructions = request.form.get("instructions", "").strip()
+        type = int(request.form.get("type"))
+        diets_id = [int(diet) for diet in request.form.getlist("diet")]
+
+        errors = []
 
         if not title or len(title) > 100:
-            abort(403)
+            errors.append("ERROR: Title cannot be empty or over 100 characters")
 
         if not instructions or len(instructions) > 4500:
-            abort(403)
+            errors.append("ERROR: Instructions cannot be empty or over 4500 characters")
 
-        all_recipes.edit_recipe(recipe_id, title, instructions, diets)
+        if not type:
+            errors.append("ERROR: Recipe type is required")
+
+        if errors:
+
+            for error in errors:
+                flash(error)
+                
+            return render_template("edit_recipe.html", recipe=recipe, title=title, instructions=instructions,
+            types=types, diets_id=diets_id, type=type, diets=diets)
+
+        all_recipes.edit_recipe(recipe_id, title, instructions, type, diets_id)
         flash("Successfully edited recipe!")
-
         return redirect(f"/recipe/{recipe_id}")
 
-    return render_template("edit_recipe.html")
+    return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets)
 
 
 @app.route("/remove_mode/<int:recipe_id>", methods=["GET", "POST"])
@@ -207,36 +234,44 @@ def register():
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
     if request.method == "POST":
-        username = request.form["username"]
-        password1 = request.form["password1"]
-        password2 = request.form["password2"]
+        username = request.form.get("username", "").strip()
+        password1 = request.form.get("password1", "")
+        password2 = request.form.get("password2", "")
 
-        if not username.strip():
-            flash("ERROR: Empty username")
-            return render_template("register.html", username=username)
+        errors = []
+
+        if not username:
+            errors.append("ERROR: Empty username")
 
         if len(username) > 15:
-            abort(403)
+            errors.append("ERROR: Username too long (max 15 characters)")
 
         if not password1 or len(password1) > 50 or len(password1) < 8:
-            abort(403)
+            errors.append("ERROR: Password must be 8-50 characters")
 
         if not password2 or len(password2) > 50 or len(password2) < 8:
-            abort(403)
+            errors.append("ERROR: Password confirmation must be 8-50 characters")
 
         if password1 != password2:
-            flash("ERROR: Passwords do not match")
+            errors.append("ERROR: Passwords do not match")
+
+        if errors:
+
+            for error in errors:
+                flash(error)
+
             return render_template("register.html", username=username)
 
         try:
             users.create_user(username, password1)
             flash("You have registered successfully!")
+            return redirect("/")
 
         except sqlite3.IntegrityError:
             flash("ERROR: Username is already taken")
             return render_template("register.html", username=username)
 
-        return redirect("/")
+    return render_template("register.html")
 
 @app.route("/user_login", methods=["GET", "POST"])
 def user_login():
@@ -300,24 +335,34 @@ def add_comment():
         flash("You need to log in to add a comment")
         return redirect("/")
 
-    if request.method == "POST":
-        check_csrf()
-        comment = request.form.get("comment")
-        recipe_id = request.form.get("recipe_id")
-        rating = int(request.form.get("rating"))
+    check_csrf()
+    comment = request.form.get("comment", "").strip()
+    recipe_id = request.form.get("recipe_id")
+    rating = int(request.form.get("rating"))
 
-        if not comment or len(comment) > 2000 or len(comment) < 10:
-            abort(403)
+    recipe = all_recipes.get_recipe(recipe_id)
+    average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
-        if rating is None or rating < 0 or rating > 5:
-            abort(400)
+    errors = []
 
-        user_id = session["user_id"]
-        all_recipes.add_comment(comment, recipe_id, user_id, rating)
+    if not comment or len(comment) > 2000 or len(comment) < 10:
+        errors.append("ERROR: Comment must be between 10 and 2000 characters")
 
-        return redirect(f"/show_comments/{recipe_id}")
+    if rating is None or rating < 0 or rating > 5:
+        errors.append("ERROR: Rating must be between 0 and 5")
 
-    return render_template("show_comments.html")
+    if errors:
+
+        for error in errors:
+            flash(error)
+            
+        return render_template("added_recipes.html", recipe=recipe, average_rating=average_rating, 
+        ratings_amount=ratings_amount, comment=comment, rating=rating)
+
+    user_id = session["user_id"]
+    all_recipes.add_comment(comment, recipe_id, user_id, rating)
+    flash("Comment added successfully!")
+    return redirect(f"/show_comments/{recipe_id}")
 
 
 @app.route("/show_comments/<int:recipe_id>")
@@ -362,20 +407,25 @@ def edit_comment(comment_id):
 
     if request.method == "POST":
         check_csrf()
-        text = request.form["comment"]
-        rating = int(request.form["rating"])
+        text = request.form.get("comment", "").strip()
+        rating = int(request.form.get("rating"))
+
+        errors = []
 
         if not text or len(text) > 2000 or len(text) < 10:
-            abort(403)
+            errors.append("ERROR: Comment must be 10-2000 characters")
 
         if rating is None or rating < 0 or rating > 5:
-            abort(403)
+            errors.append("ERROR: Rating must be between 0 and 5")
+
+        if errors:
+            for error in errors:
+                flash(error)
+                return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
         all_recipes.edit_comment(comment_id, text, rating)
 
         return redirect(f"/show_comments/{recipe_id}")
-
-    return render_template("edit_comment.html")
 
 
 @app.route("/remove_comment/<int:comment_id>", methods=["GET", "POST"])
