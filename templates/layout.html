@@ -12,9 +12,7 @@
 
     {% if session.user_id %}
 
-      <p 
-      class="user-info">Logged in as {{ session.username }}
-      </p>
+      <p>Logged in as {{ session.username }}</p>
 
     {% endif %}
 
@@ -42,6 +40,9 @@
 
     {% if "ERROR" in message %}
     <div class="error-info">{{ message }}</div>
+
+    {% elif "successfully" in message|lower %}
+    <div class="success-info">{{ message }}</div>    
 
     {% else %}
       <div class="user-info">{{ message }}</div>

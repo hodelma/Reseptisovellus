@@ -14,15 +14,36 @@ body {
 
 .user-info {
     text-align: center;
-    color: rgb(0, 34, 255);
+    border-radius: 10px;
+    padding: 15px;
+    max-width:max-content;
+    background-color:#3777b3;
+    color: white;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
+    margin: 20px auto;
 }
 
 .error-info {
+    border-radius: 10px;
+    padding: 15px;
+    max-width:max-content;
     text-align: center;
-    color: rgb(255, 0, 0);
+    margin: 20px auto;
+    background-color:#cb4545;
+    color: white;
+    font-size: 18px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.success-info {
+    border-radius: 10px;
+    padding: 15px;
+    max-width:max-content;
+    text-align: center;
+    margin: 20px auto;
+    background-color:#61bd4a;
+    color: white;
     font-size: 18px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
