@@ -52,11 +52,13 @@ def get_recipe(recipe_id):
     sql = """SELECT recipes.id,
                     recipes.title,
                     recipes.instructions,
-                    types.title type,
-                    diets.title diet,
-                    users.id user_id, 
+                    types.id type_id,
+                    types.title type_title,
+                    diets.id diet,
+                    users.id user_id,
                     users.username,
-                    GROUP_CONCAT(diets.title, ", ") diets
+                    GROUP_CONCAT(diets.id) diet_id,
+                    GROUP_CONCAT(diets.title, ", ") AS diets
             FROM recipes
             JOIN types ON recipes.type_id = types.id
             JOIN users ON recipes.user_id = users.id
@@ -106,16 +108,17 @@ def add_recipe(title, instructions, type_id, diets, user_id):
         db.execute(sql, (recipe_id, diet_id))
 
 
-def edit_recipe(recipe_id, title, instructions, diets):
-    sql = """UPDATE recipes SET title = ?, instructions = ? WHERE id = ?"""
-    db.execute(sql, [title, instructions, recipe_id])
+def edit_recipe(recipe_id, title, instructions, type_id, diets):
+    sql = """UPDATE recipes SET title = ?, instructions = ?, type_id = ? WHERE id = ?"""
+    db.execute(sql, [title, instructions, type_id, recipe_id])
 
     sql = """DELETE FROM connect_recipe_diets WHERE recipe_id = ?"""
     db.execute(sql, [recipe_id])
 
-    sql = """INSERT INTO connect_recipe_diets (recipe_id, diet_id) VALUES (?, ?)"""
-    for diet_id in diets:
-        db.execute(sql, [recipe_id, diet_id])
+    if diets:
+        sql = """INSERT INTO connect_recipe_diets (recipe_id, diet_id) VALUES (?, ?)"""
+        for diet_id in diets:
+            db.execute(sql, [recipe_id, diet_id])
 
 
 def remove_recipe(recipe_id):
