@@ -45,7 +45,7 @@
     {% for diet in diets %}
 
       <input type="checkbox" name="diet" id="diet{{ diet.id }}" value="{{ diet.id }}"
-      {% if diet.id|string in diets_id %}
+      {% if diet.id in diets_id %}
       checked
       {% endif %}>
       <label for="diet{{ diet.id }}">{{ diet.title }}</label>
