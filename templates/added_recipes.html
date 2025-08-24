@@ -30,13 +30,13 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 </p>
 
 <p>
-  {% if recipe.type and recipe.diets %}
+  {% if recipe.type_title and recipe.diets %}
 
-    <i>{{ recipe.type }}, {{ recipe.diets }}</i>
+    <i>{{ recipe.type_title }}, {{ recipe.diets }}</i>
 
   {% else %}
 
-    <i>{{ recipe.type }}</i>
+    <i>{{ recipe.type_title }}</i>
     
   {% endif %}
 </p>
