@@ -10,6 +10,40 @@
       <label for="title">Recipe title:</label><br />
       <textarea name="title" id="title" rows="1" cols="70" maxlength="100" required>{{ recipe.title }}</textarea>
   </p>
+
+  <p>
+    <b>Edit dish type:</b>
+
+    <br>
+    <br>
+
+    {% for t in types %}
+
+      <input type="radio" name="type" id="type{{ t.id }}" value="{{ t.id }}" required
+      {% if t.id == type %}
+      checked
+      {% endif %}>
+      <label for="type{{ t.id }}">{{ t.title }}</label>
+
+      <br>
+    {% endfor %}
+
+  </p>
+
+  <b>Edit diet:</b>
+
+  <br>
+  <br>
+  {% for diet in diets %}
+
+  <input type="checkbox" name="diet" id="diet{{ diet.id }}" value="{{ diet.id }}"
+  {% if diet.id in diets_id %}
+  checked
+  {% endif %}>
+  <label for="diet{{ diet.id }}">{{ diet.title }}</label>
+
+  <br>
+  {% endfor %}
   
   <p>
     <b><label for="instructions">Edit recipe:</label><br />
