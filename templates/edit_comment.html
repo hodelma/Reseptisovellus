@@ -6,48 +6,22 @@
 <form action="/edit_comment/{{ comment.id }}" method="post">
   <p>
     <label for="comment">Your comment:</label> <br />
-      <textarea name="comment" id="comment" rows="10" cols="70" minlength="10" maxlength="2000" 
-      required> {{ comment.comment_text }} </textarea>
+      <textarea name="comment" id="comment" rows="10" cols="70" minlength="10" maxlength="2000" required>
+      {% if comment %}
+      {{ comment.comment_text }}
+      {% endif %}</textarea>
   </p>
 
   <p>Edit rating:</p>
+  {% for i in range(6) %}
+  <input type="radio" name="rating" id="rating{{i}}" value="{{i}}" 
 
-  <p>
-    <input type="radio" name="rating" id="rating0" value="0" required
-    {% if comment.rating == 0 %}
-      checked
-    {% endif %} />
-    <label for="rating0">0</label>
+  {% if comment and comment.rating == i %}
+  checked
+  {% endif %}required/>
 
-    <input type="radio" name="rating" id="rating1" value="1"
-    {% if comment.rating == 1 %}
-      checked
-    {% endif %} />
-    <label for="rating1">1</label>
-
-    <input type="radio" name="rating" id="rating2" value="2"
-    {% if comment.rating == 2 %}
-      checked
-    {% endif %} />
-    <label for="rating2">2</label>
-
-    <input type="radio" name="rating" id="rating3" value="3"
-    {% if comment.rating == 3 %}
-      checked
-    {% endif %} />
-    <label for="rating3">3</label>
-
-    <input type="radio" name="rating" id="rating4" value="4"
-    {% if comment.rating == 4 %}
-      checked
-    {% endif %} />
-    <label for="rating4">4</label>
-
-    <input type="radio" name="rating" id="rating5" value="5"
-    {% if comment.rating == 5 %}
-      checked
-    {% endif %} />
-    <label for="rating5">5</label>
+  <label for="rating{{i}}">{{i}}</label>
+  {% endfor %}
   </p>
 
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
