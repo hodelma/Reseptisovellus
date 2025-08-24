@@ -228,11 +228,18 @@ def show_recipe(recipe_id, page=1):
 
 @app.route("/register")
 def register():
+    if "user_id" in session:
+        flash("ERROR: You must log out first in order to register")
+        return redirect("/")
     return render_template("register.html")
 
 
 @app.route("/create_account", methods=["GET", "POST"])
 def create_account():
+    if "user_id" in session:
+        flash("ERROR: You must log out first in order to register")
+        return redirect("/")
+
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password1 = request.form.get("password1", "")
@@ -275,6 +282,10 @@ def create_account():
 
 @app.route("/user_login", methods=["GET", "POST"])
 def user_login():
+    if "user_id" in session:
+        flash("ERROR: You must log out first in order to log in")
+        return redirect("/")
+    
     if request.method == "GET":
         return render_template("login.html")
 
