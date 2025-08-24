@@ -346,7 +346,7 @@ def add_comment():
     errors = []
 
     if not comment or len(comment) > 2000 or len(comment) < 10:
-        errors.append("ERROR: Comment must be between 10 and 2000 characters")
+        errors.append("ERROR: Comment can't be empty and must be between 10 and 2000 characters")
 
     if rating is None or rating < 0 or rating > 5:
         errors.append("ERROR: Rating must be between 0 and 5")
