@@ -115,7 +115,7 @@ def edit_recipe(recipe_id):
     diets = all_recipes.get_diets()
 
     type = recipe["type_id"]
-
+    diets_id = []
     if recipe["diet_id"]:
         diets_id = [int(diet) for diet in recipe["diet_id"].split(",")]
 
