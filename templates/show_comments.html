@@ -17,8 +17,7 @@
 </p>
 
 <p>
-    {{ comment.comment_text }}
-    
+    {{ comment.comment_text | show_lines }}
     
     {% if comment.user_id == session.user_id %}
 
