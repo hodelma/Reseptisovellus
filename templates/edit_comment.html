@@ -4,13 +4,11 @@
 {% block content %}
 
 <form action="/edit_comment/{{ comment.id }}" method="post">
-  <p>
-    <label for="comment">Your comment:</label> <br />
-      <textarea name="comment" id="comment" rows="10" cols="70" minlength="10" maxlength="2000" required>
-      {% if comment %}
-      {{ comment.comment_text }}
-      {% endif %}</textarea>
-  </p>
+<p>
+<label for="comment">Your comment:</label> <br />
+<textarea name="comment" id="comment" rows="10" cols="70" minlength="10" maxlength="2000" required>
+{% if comment %}{{ comment.comment_text }}{% endif %}</textarea>
+</p>
 
   <p>Edit rating:</p>
   {% for i in range(6) %}

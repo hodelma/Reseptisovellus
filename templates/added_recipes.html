@@ -56,16 +56,14 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 
 {% if session.user_id %}
 
-  <form action="/add_comment" method="post">
+<form action="/add_comment" method="post">
 
-  <p>
-  <label for="comment">Write your comment:</label> <br />
-  <textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
-  {% if comment %}
-  {{ comment.comment_text }}
-  {% endif %}</textarea>
-  <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
-  </p>
+<p>
+<label for="comment">Write your comment:</label> <br />
+<textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
+{% if comment %}{{ comment.comment_text }}{% endif %}</textarea>
+<input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
+</p>
 
   <p>
   Rate this recipe:
