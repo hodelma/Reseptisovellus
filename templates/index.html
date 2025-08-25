@@ -27,7 +27,9 @@
 ({{ recipe.average_rating|round(1) }} ⭐️,
 {{ recipe.comments_count }} ratings)
 
-<p>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a></p>
+<p>
+    <small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a></small>
+</p>
 
 </li>
 
