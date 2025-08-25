@@ -150,7 +150,7 @@ def edit_recipe(recipe_id):
             instructions=instructions, types=types, diets_id=diets_id, type=type, diets=diets)
 
         all_recipes.edit_recipe(recipe_id, title, instructions, type, diets_id)
-        flash("Successfully edited recipe!")
+        flash("Recipe edited successfully!")
         return redirect(f"/recipe/{recipe_id}")
 
     return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets)
@@ -174,7 +174,7 @@ def delete_recipe(recipe_id):
 
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
-            flash("Successfully removed recipe!")
+            flash("Recipe removed successfully!")
             return redirect("/added_recipes")
 
         if "cancel" in request.form:
@@ -271,7 +271,7 @@ def create_account():
 
         try:
             users.create_user(username, password1)
-            flash("You have registered successfully!")
+            flash("You have registered successfully! You can now log in.")
             return redirect("/")
 
         except sqlite3.IntegrityError:
@@ -435,6 +435,7 @@ def edit_comment(comment_id):
                 return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
         all_recipes.edit_comment(comment_id, text, rating)
+        flash("Comment edited successfully")
 
         return redirect(f"/show_comments/{recipe_id}")
 
@@ -459,6 +460,7 @@ def delete_comment(comment_id):
 
         if "continue" in request.form:
             all_recipes.remove_comment(comment_id)
+            flash("Comment removed successfully")
 
         return redirect(f"/show_comments/{recipe_id}")
 
