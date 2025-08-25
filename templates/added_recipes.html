@@ -14,7 +14,7 @@
 {% if average_rating %}
 
 <p>
-Average rating: {{ average_rating }} ({{ ratings_amount }} ratings)
+Average rating: {{ average_rating|round(1) }} ({{ ratings_amount }} ratings)
 </p>
 
 {% else %}
@@ -85,6 +85,8 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
   <br>
   
   {% endif %}
+
+  <br>
 
 <a href="/show_comments/{{ recipe.id }}">Browse comments</a>
 

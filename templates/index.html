@@ -24,14 +24,18 @@
 <b><a href="/recipe/{{ recipe.id }}">
 {{ recipe.title }}</b></a>
 
-({{ recipe.average_rating }} ⭐️,
-
+({{ recipe.average_rating|round(1) }} ⭐️,
 {{ recipe.comments_count }} ratings)
 </li>
 
 <br>
 
 {% endfor %}
+
+{% else %}
+
+<h2>Top 5 Recipes</h2>
+<p>No added recipes yet.</p>
 
 {% endif %}
 
