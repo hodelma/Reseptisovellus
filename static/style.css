@@ -10,10 +10,9 @@ body {
     color: #0f4ecc;
     padding: 1em;
     font-size: 20px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.user-info {
+.user-info, .error-info, .success-info {
     position: relative;
     top: -10px;
     text-align: center;
@@ -23,78 +22,40 @@ body {
     background-color:#3777b3;
     color: white;
     font-size: 18px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin: 20px auto;
 }
 
 .error-info {
-    position: relative;
-    top: -10px;
-    border-radius: 10px;
-    padding: 15px;
-    max-width:max-content;
-    text-align: center;
-    margin: 20px auto;
     background-color:#cb4545;
-    color: white;
-    font-size: 18px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .success-info {
-    position: relative;
-    top: -10px;
-    border-radius: 10px;
-    padding: 15px;
-    max-width:max-content;
-    text-align: center;
-    margin: 20px auto;
     background-color:#61bd4a;
-    color: white;
-    font-size: 18px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .nav {
     position: absolute;
+    border-radius: 10px;
     text-align: center;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding: 15px 32px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     top: 0;
     left: 0;
     right: 0;
 }
 
-.nav a {
-    text-align: center;
-    text-decoration: none;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
 .content {
     text-align: center;
-    max-width: 700px;
+    max-width: 600px;
+    overflow-wrap: break-word;
     margin: auto;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
 }
 
-.btn {
-  background-color: #0454aa;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.btn-menu {
+.btn, .btn-remove, .btn-edit, .btn-menu {
+    border-radius: 5px;
     background-color: #0454aa;
     border: none;
     color: white;
@@ -102,29 +63,58 @@ body {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer;
+}
+
+.btn-remove {
+    background-color: #ae2929;
+    font-size: 14px;
+    padding: 12px 30px;
+}
+
+.btn-edit {
+    background-color: #2374c9;
+    font-size: 14px;
+    padding: 12px 30px;
+}
+
+.btn-menu {
     position: absolute;
     top: 10px;
     left: 10px;
 }
 
 .btn:hover {
-  background-color: #044d9a;
+  background-color: #03468e;
+}
+
+.btn-remove:hover {
+  background-color: #9b2121;
+}
+
+.btn-edit:hover {
+  background-color: #1165bf;
 }
 
 .btn-menu:hover {
   background-color: #044d9a;
 }
 
-.recipe-instructions {
+.recipe-instructions, .top5-section {
+    background-color: rgba(221, 248, 250, 0.937);
+    border-radius: 5px;
+    padding: 20px;
     overflow-wrap: break-word;
     margin: auto;
-    text-align: center;
     max-width: 700px;
 }
 
 .search-results {
     text-align: center;
     padding-left: 0;
+}   
+
+.top5-section {
+    padding: 10px 32px;
+    border-radius: 15px;
 }
