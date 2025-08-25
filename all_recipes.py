@@ -38,6 +38,29 @@ def get_recipes(page, page_size):
     return db.query(sql, [limit, offset])
 
 
+def get_top_recipes():
+    sql = """SELECT recipes.id,
+               recipes.title,
+               recipes.instructions,
+               types.title type,
+               users.id user_id,
+               users.username,
+               GROUP_CONCAT(DISTINCT diets.title) diets,
+               AVG(comments.rating) average_rating,
+               COUNT(DISTINCT comments.id) comments_count
+            FROM recipes
+            JOIN types ON recipes.type_id = types.id
+            JOIN users ON recipes.user_id = users.id
+            LEFT JOIN connect_recipe_diets ON recipes.id = connect_recipe_diets.recipe_id
+            LEFT JOIN diets ON connect_recipe_diets.diet_id = diets.id
+            LEFT JOIN comments ON recipes.id = comments.recipe_id
+            GROUP BY recipes.id
+            HAVING COUNT(comments.id) > 0
+            ORDER BY average_rating DESC
+            LIMIT 5"""
+    return db.query(sql)
+
+
 def get_types():
     sql = "SELECT id, title FROM types ORDER BY id"
     return db.query(sql)

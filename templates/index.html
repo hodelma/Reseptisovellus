@@ -11,4 +11,28 @@
 <p>In this app, you can share your favorite recipes and rate other users' recipes.</p>
 <p>You can also comment on other recipes and let people know your thoughts!</p>
 
+<br>
+<br>
+
+{% if top_recipes %}
+
+<h2>Top 5 Recipes</h2>
+
+{% for recipe in top_recipes %}
+
+<li>
+<b><a href="/recipe/{{ recipe.id }}">
+{{ recipe.title }}</b></a>
+
+({{ recipe.average_rating }} ⭐️,
+
+{{ recipe.comments_count }} ratings)
+</li>
+
+<br>
+
+{% endfor %}
+
+{% endif %}
+
 {% endblock %}

@@ -35,7 +35,8 @@ def show_lines(recipe_content):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    top_recipes = all_recipes.get_top_recipes()
+    return render_template("index.html", top_recipes=top_recipes)
 
 
 def check_csrf():
