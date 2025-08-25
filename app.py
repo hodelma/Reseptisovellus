@@ -51,7 +51,7 @@ def add_recipe():
     if "user_id" not in session:
         flash("You need to log in to add a recipe")
         return redirect("/")
-    
+
     types = all_recipes.get_types()
     diets = all_recipes.get_diets()
 
@@ -77,7 +77,7 @@ def add_recipe():
 
             for error in errors:
                 flash(error)
-            
+
             return render_template("add_recipe.html", title=title, instructions=instructions,
             type=type, types=types, diets=diets, diets_id=diets_id)
 
@@ -120,7 +120,7 @@ def edit_recipe(recipe_id):
         diets_id = [int(diet) for diet in recipe["diet_id"].split(",")]
 
     if request.method == "GET":
-        return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets, 
+        return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets,
         type=type, diets_id=diets_id)
 
     if request.method == "POST":
@@ -145,9 +145,9 @@ def edit_recipe(recipe_id):
 
             for error in errors:
                 flash(error)
-                
-            return render_template("edit_recipe.html", recipe=recipe, title=title, instructions=instructions,
-            types=types, diets_id=diets_id, type=type, diets=diets)
+
+            return render_template("edit_recipe.html", recipe=recipe, title=title,
+            instructions=instructions, types=types, diets_id=diets_id, type=type, diets=diets)
 
         all_recipes.edit_recipe(recipe_id, title, instructions, type, diets_id)
         flash("Successfully edited recipe!")
@@ -285,7 +285,7 @@ def user_login():
     if "user_id" in session:
         flash("ERROR: You must log out first in order to log in")
         return redirect("/")
-    
+
     if request.method == "GET":
         return render_template("login.html")
 
@@ -323,7 +323,7 @@ def search(page=1):
     if not recipe_query:
         flash("Entry can't be empty")
         return redirect(f"/added_recipes/{page}")
-    
+
     search_count = all_recipes.search_count(recipe_query)
     page_count = math.ceil(search_count["count"] / page_size)
     page_count = max(page_count, 1)
@@ -366,8 +366,8 @@ def add_comment():
 
         for error in errors:
             flash(error)
-            
-        return render_template("added_recipes.html", recipe=recipe, average_rating=average_rating, 
+
+        return render_template("added_recipes.html", recipe=recipe, average_rating=average_rating,
         ratings_amount=ratings_amount, comment=comment, rating=rating)
 
     user_id = session["user_id"]

@@ -99,7 +99,7 @@ def add_recipe(title, instructions, type_id, diets, user_id):
     sql = """INSERT INTO recipes (title, instructions, type_id, user_id)
             VALUES (?, ?, ?, ?)"""
     db.execute(sql, (title, instructions, type_id, user_id))
-    
+
     recipe_id = db.last_insert_id()
 
     sql= """INSERT INTO connect_recipe_diets (recipe_id, diet_id) VALUES (?, ?)"""
