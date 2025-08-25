@@ -14,13 +14,15 @@
 <br>
 <br>
 
+<div class="top5-section">
 {% if top_recipes %}
 
 <h2>Top 5 Recipes</h2>
+<br>
+<br>
 
 {% for recipe in top_recipes %}
 
-<li>
 <b><a href="/recipe/{{ recipe.id }}">
 {{ recipe.title }}</b></a>
 
@@ -31,11 +33,11 @@
     <small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a></small>
 </p>
 
-</li>
 
 <br>
 
 {% endfor %}
+</div>
 
 {% else %}
 
