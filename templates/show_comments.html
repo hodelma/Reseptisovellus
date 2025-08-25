@@ -24,8 +24,8 @@
     {% if comment.user_id == session.user_id %}
 
     <p>
-        <a href="/edit_comment/{{ comment.id }}">Edit</a> |
-        <a href="/remove_comment/{{ comment.id }}">Delete</a>
+        <a href="/edit_comment/{{ comment.id }}"class="btn-edit">Edit</a>
+        <a href="/remove_comment/{{ comment.id }}" class="btn-remove">Delete</a>
     </p>
 
     {% endif %}

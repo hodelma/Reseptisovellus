@@ -50,8 +50,8 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 {% if recipe.user_id == session.user_id %}
 
 <p>
-<a href="/edit_mode/{{ recipe.id }}" class="btn">Edit recipe</a>
-<a href="/remove_mode/{{ recipe.id }}" class="btn">Remove recipe</a>
+<a href="/edit_mode/{{ recipe.id }}" class="btn-edit">Edit recipe</a>
+<a href="/remove_mode/{{ recipe.id }}" class="btn-remove">Remove recipe</a>
 </p>
 
 {% endif %}
