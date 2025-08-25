@@ -44,9 +44,19 @@
 
 
 <p>
+{% if page > 1 %}
+
 <a href="/show_comments/{{ recipe.id }}/{{ page - 1 }}">&lt;&lt;</a>
+
+{% endif %}
+
 Page {{ page }}/{{ page_count }}
+
+{% if page < page_count %}
+
 <a href="/show_comments/{{ recipe.id }}/{{ page + 1 }}">&gt;&gt;</a>
+
+{% endif %}
 </p>
 
 {% endblock %}
