@@ -8,7 +8,7 @@ def get_user(user_id):
 
 
 def get_recipes(user_id):
-    sql = "SELECT id, title FROM recipes WHERE user_id = ? ORDER BY id DESC"
+    sql = "SELECT id, title, sent_at FROM recipes WHERE user_id = ? ORDER BY sent_at DESC"
     return db.query(sql, [user_id])
 
 
