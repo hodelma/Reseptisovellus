@@ -2,8 +2,7 @@ import time
 import math
 import secrets
 import sqlite3
-from flask import Flask
-from flask import render_template, request, redirect, session, flash, abort, g
+from flask import Flask, render_template, request, redirect, session, flash, abort, g
 import markupsafe
 
 import config
@@ -43,7 +42,6 @@ def index():
 def check_csrf():
     if "csrf_token" not in request.form:
         abort(403)
-
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
@@ -63,7 +61,6 @@ def add_recipe():
         title = request.form.get("title", "").strip()
         type_id = int(request.form.get("type"))
         diets_id = request.form.getlist("diet")
-
         errors = []
 
         if not title or len(title) > 100:
@@ -76,7 +73,6 @@ def add_recipe():
             errors.append("ERROR: Recipe type is required")
 
         if errors:
-
             for error in errors:
                 flash(error)
 
@@ -84,8 +80,7 @@ def add_recipe():
             type=type_id, types=types, diets=diets, diets_id=diets_id)
 
         user_id = session["user_id"]
-
-        all_recipes.add_recipe(title, instructions, type, diets_id, user_id)
+        all_recipes.add_recipe(title, instructions, type_id, diets_id, user_id)
         flash("Recipe added successfully!")
         return redirect("/recipes")
 
@@ -115,7 +110,6 @@ def edit_recipe(recipe_id):
 
     types = all_recipes.get_types()
     diets = all_recipes.get_diets()
-
     type_id = recipe["type_id"]
     diets_id = []
     if recipe["diet_id"]:
@@ -131,7 +125,6 @@ def edit_recipe(recipe_id):
         instructions = request.form.get("instructions", "").strip()
         type_id = int(request.form.get("type"))
         diets_id = [int(diet) for diet in request.form.getlist("diet")]
-
         errors = []
 
         if not title or len(title) > 100:
@@ -140,11 +133,10 @@ def edit_recipe(recipe_id):
         if not instructions or len(instructions) > 4500:
             errors.append("ERROR: Instructions cannot be empty or over 4500 characters")
 
-        if not type:
+        if not type_id:
             errors.append("ERROR: Recipe type is required")
 
         if errors:
-
             for error in errors:
                 flash(error)
 
@@ -181,14 +173,12 @@ def delete_recipe(recipe_id):
 
         if "cancel" in request.form:
             return redirect(f"/recipe/{recipe_id}")
-
-
     return render_template("remove_recipe.html")
 
 
 @app.route("/recipes", methods=["GET", "POST"])
 @app.route("/recipes/<int:page>", methods=["GET", "POST"])
-def recipes(page=0):
+def recipes(page=1):
     page_size = 10
     recipe_count = all_recipes.recipe_count()
     page_count = math.ceil(recipe_count / page_size)
@@ -224,7 +214,6 @@ def show_recipe(recipe_id, page=1):
 
     recipe_list = all_recipes.get_recipes(page, page_size)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
-
     return render_template("recipes.html", recipe=recipe, recipes=recipe_list,
     average_rating=average_rating, ratings_amount=ratings_amount, page=page, page_count=page_count)
 
@@ -246,7 +235,6 @@ def create_account():
         username = request.form.get("username", "").strip()
         password1 = request.form.get("password1", "")
         password2 = request.form.get("password2", "")
-
         errors = []
 
         if not username:
@@ -265,12 +253,9 @@ def create_account():
             errors.append("ERROR: Passwords do not match")
 
         if errors:
-
             for error in errors:
                 flash(error)
-
             return render_template("register.html", username=username)
-
         try:
             users.create_user(username, password1)
             flash("You have registered successfully! You can now log in.")
@@ -293,7 +278,6 @@ def user_login():
 
     username = request.form["username"]
     password = request.form["password"]
-
     user_id = users.check_login_credentials(username, password)
 
     if user_id:
@@ -336,7 +320,6 @@ def search(page=1):
     if page > page_count:
         return redirect(f"/search_recipe/{page_count}")
 
-
     return render_template("recipes.html", recipe_query=recipe_query,
                            results=results, page=page, page_count=page_count)
 
@@ -354,7 +337,6 @@ def add_comment():
 
     recipe = all_recipes.get_recipe(recipe_id)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
-
     errors = []
 
     if not comment or len(comment) > 2000 or len(comment) < 10:
@@ -364,7 +346,6 @@ def add_comment():
         errors.append("ERROR: Rating must be between 0 and 5")
 
     if errors:
-
         for error in errors:
             flash(error)
 
@@ -420,7 +401,6 @@ def edit_comment(comment_id):
     check_csrf()
     text = request.form.get("comment", "").strip()
     rating = int(request.form.get("rating"))
-
     errors = []
 
     if not text or len(text) > 2000 or len(text) < 10:
@@ -436,7 +416,6 @@ def edit_comment(comment_id):
 
     all_recipes.edit_comment(comment_id, text, rating)
     flash("Comment edited successfully")
-
     return redirect(f"/show_comments/{recipe_id}")
 
 
@@ -463,5 +442,4 @@ def delete_comment(comment_id):
             flash("Comment removed successfully")
 
         return redirect(f"/show_comments/{recipe_id}")
-
     return render_template("remove_comment.html")
