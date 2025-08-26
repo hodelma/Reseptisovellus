@@ -12,12 +12,13 @@ import users
 
 
 app = Flask(__name__)
-app.secret_key = config.secret_key
+app.secret_key = config.SECRET_KEY
 
 
 @app.before_request
 def before_request():
     g.start_time = time.time()
+
 
 @app.after_request
 def after_request(response):
@@ -60,7 +61,7 @@ def add_recipe():
         check_csrf()
         instructions = request.form.get("instructions", "").strip()
         title = request.form.get("title", "").strip()
-        type = int(request.form.get("type"))
+        type_id = int(request.form.get("type"))
         diets_id = request.form.getlist("diet")
 
         errors = []
@@ -71,7 +72,7 @@ def add_recipe():
         if not instructions or len(instructions) > 4500:
             errors.append("ERROR: Instructions cannot be empty or over 4500 characters")
 
-        if not type:
+        if not type_id:
             errors.append("ERROR: Recipe type is required")
 
         if errors:
@@ -80,7 +81,7 @@ def add_recipe():
                 flash(error)
 
             return render_template("add_recipe.html", title=title, instructions=instructions,
-            type=type, types=types, diets=diets, diets_id=diets_id)
+            type=type_id, types=types, diets=diets, diets_id=diets_id)
 
         user_id = session["user_id"]
 
@@ -98,8 +99,8 @@ def show_user(user_id):
     if not user:
         abort(404)
 
-    recipes = users.get_recipes(user_id)
-    return render_template("show_user.html", user=user, recipes=recipes)
+    recipe_list = users.get_recipes(user_id)
+    return render_template("show_user.html", user=user, recipes=recipe_list)
 
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
@@ -115,20 +116,20 @@ def edit_recipe(recipe_id):
     types = all_recipes.get_types()
     diets = all_recipes.get_diets()
 
-    type = recipe["type_id"]
+    type_id = recipe["type_id"]
     diets_id = []
     if recipe["diet_id"]:
         diets_id = [int(diet) for diet in recipe["diet_id"].split(",")]
 
     if request.method == "GET":
         return render_template("edit_recipe.html", recipe=recipe, types=types, diets=diets,
-        type=type, diets_id=diets_id)
+        type=type_id, diets_id=diets_id)
 
     if request.method == "POST":
         check_csrf()
         title = request.form.get("title", "").strip()
         instructions = request.form.get("instructions", "").strip()
-        type = int(request.form.get("type"))
+        type_id = int(request.form.get("type"))
         diets_id = [int(diet) for diet in request.form.getlist("diet")]
 
         errors = []
@@ -148,9 +149,9 @@ def edit_recipe(recipe_id):
                 flash(error)
 
             return render_template("edit_recipe.html", recipe=recipe, title=title,
-            instructions=instructions, types=types, diets_id=diets_id, type=type, diets=diets)
+            instructions=instructions, types=types, diets_id=diets_id, type=type_id, diets=diets)
 
-        all_recipes.edit_recipe(recipe_id, title, instructions, type, diets_id)
+        all_recipes.edit_recipe(recipe_id, title, instructions, type_id, diets_id)
         flash("Recipe edited successfully!")
         return redirect(f"/recipe/{recipe_id}")
 
@@ -199,8 +200,8 @@ def recipes(page=0):
     if page > page_count:
         return redirect(f"/recipes/{page_count}")
 
-    recipes = all_recipes.get_recipes(page, page_size)
-    return render_template("recipes.html", recipes=recipes, page=page, page_count=page_count)
+    recipe_list = all_recipes.get_recipes(page, page_size)
+    return render_template("recipes.html", recipes=recipe_list, page=page, page_count=page_count)
 
 
 @app.route("/recipe/<int:recipe_id>")
@@ -221,10 +222,10 @@ def show_recipe(recipe_id, page=1):
     if page > page_count:
         return redirect(f"/recipe/{recipe_id}/{page_count}")
 
-    recipes = all_recipes.get_recipes(page, page_size)
+    recipe_list = all_recipes.get_recipes(page, page_size)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
-    return render_template("recipes.html", recipe=recipe, recipes=recipes,
+    return render_template("recipes.html", recipe=recipe, recipes=recipe_list,
     average_rating=average_rating, ratings_amount=ratings_amount, page=page, page_count=page_count)
 
 @app.route("/register")
@@ -290,20 +291,19 @@ def user_login():
     if request.method == "GET":
         return render_template("login.html")
 
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+    username = request.form["username"]
+    password = request.form["password"]
 
-        user_id = users.check_login_credentials(username, password)
+    user_id = users.check_login_credentials(username, password)
 
-        if user_id:
-            session["user_id"] = user_id
-            session["username"] = username
-            session["csrf_token"] = secrets.token_hex(16)
-            return redirect("/")
+    if user_id:
+        session["user_id"] = user_id
+        session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
+        return redirect("/")
 
-        flash("ERROR: Invalid username or password")
-        return render_template("login.html", username=username)
+    flash("ERROR: Invalid username or password")
+    return render_template("login.html", username=username)
 
 
 @app.route("/logout")
@@ -417,28 +417,27 @@ def edit_comment(comment_id):
     if request.method == "GET":
         return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
-    if request.method == "POST":
-        check_csrf()
-        text = request.form.get("comment", "").strip()
-        rating = int(request.form.get("rating"))
+    check_csrf()
+    text = request.form.get("comment", "").strip()
+    rating = int(request.form.get("rating"))
 
-        errors = []
+    errors = []
 
-        if not text or len(text) > 2000 or len(text) < 10:
-            errors.append("ERROR: Comment must be 10-2000 characters")
+    if not text or len(text) > 2000 or len(text) < 10:
+        errors.append("ERROR: Comment must be 10-2000 characters")
 
-        if rating is None or rating < 0 or rating > 5:
-            errors.append("ERROR: Rating must be between 0 and 5")
+    if rating is None or rating < 0 or rating > 5:
+        errors.append("ERROR: Rating must be between 0 and 5")
 
-        if errors:
-            for error in errors:
-                flash(error)
-                return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
+    if errors:
+        for error in errors:
+            flash(error)
+            return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
-        all_recipes.edit_comment(comment_id, text, rating)
-        flash("Comment edited successfully")
+    all_recipes.edit_comment(comment_id, text, rating)
+    flash("Comment edited successfully")
 
-        return redirect(f"/show_comments/{recipe_id}")
+    return redirect(f"/show_comments/{recipe_id}")
 
 
 @app.route("/remove_comment/<int:comment_id>", methods=["GET", "POST"])

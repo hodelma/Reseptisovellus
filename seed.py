@@ -15,25 +15,25 @@ with open("init.sql", "r", encoding="utf-8") as file:
 
 db.executescript(insert_commands)
 
-user_count = 1000
-recipe_count = 10**5
-comment_count = 10**6
+USER_COUNT = 1000
+RECIPE_COUNT = 10**5
+COMMENT_COUNT = 10**6
 
 
-for i in range(1, user_count + 1):
+for i in range(1, USER_COUNT + 1):
     db.execute("INSERT INTO users (username) VALUES (?)",
                ["user" + str(i)])
 
-for i in range(1, recipe_count + 1):
-    user_id = random.randint(1, user_count)
+for i in range(1, RECIPE_COUNT + 1):
+    user_id = random.randint(1, USER_COUNT)
     type_id = random.randint(1, 8)
     diet_id = random.randint(1, 8)
     db.execute("INSERT INTO recipes (title, user_id, type_id, diet_id) VALUES (?, ?, ?, ?)",
                ["recipe" + str(i), user_id, type_id, diet_id])
 
-for i in range(1, comment_count + 1):
-    user_id = random.randint(1, user_count)
-    recipe_id = random.randint(1, recipe_count)
+for i in range(1, COMMENT_COUNT + 1):
+    user_id = random.randint(1, USER_COUNT)
+    recipe_id = random.randint(1, RECIPE_COUNT)
     db.execute("""INSERT INTO comments (comment_text, user_id, recipe_id)
                   VALUES (?, ?, ?)""",
                ["comment" + str(i), user_id, recipe_id])
