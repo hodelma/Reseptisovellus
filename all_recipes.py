@@ -56,7 +56,7 @@ def get_top_recipes():
             LEFT JOIN comments ON recipes.id = comments.recipe_id
             GROUP BY recipes.id
             HAVING COUNT(comments.id) > 0
-            ORDER BY average_rating DESC
+            ORDER BY average_rating DESC, comments_count DESC
             LIMIT 5"""
     return db.query(sql)
 
