@@ -62,7 +62,8 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 
 <p>
 <label for="comment">Write your comment:</label> <br />
-<textarea name="comment" id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
+<textarea name="comment" placeholder="Write your thoughts on this recipe..." 
+id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
 {% if comment %}{{ comment.comment_text }}{% endif %}</textarea>
 <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
 </p>
@@ -95,7 +96,7 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 <br>
 <br>
 
-<a href="/added_recipes" class="btn">Back</a>
+<a href="/recipes" class="btn">Back</a>
 
 </form>
 
@@ -107,11 +108,11 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 <label for="recipe_query">Search for:</label>
 {% if recipe_query %}
 
-<input type="text" name="recipe_query" id="recipe_query" value="{{ recipe_query }}" />
+<input type="text" placeholder="Title or username..." name="recipe_query" id="recipe_query" value="{{ recipe_query }}" />
 
 {% else %}
 
-<input type="text" name="recipe_query" id="recipe_query"/>
+<input type="text" placeholder="Title or username..." name="recipe_query" id="recipe_query"/>
 
 {% endif %}
 
@@ -123,7 +124,7 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
 
 {% if recipe_query %}
 
-<a href="/added_recipes" class="btn">Back</a>
+<a href="/recipes" class="btn">Back</a>
 
 <h2>Search results:</h2>
 
@@ -214,7 +215,7 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
 
   {% if page > 1 %}
 
-    <a href="/added_recipes/{{ page - 1 }}">&lt;&lt;</a>
+    <a href="/recipes/{{ page - 1 }}">&lt;&lt;</a>
 
   {% endif %}
 
@@ -222,7 +223,7 @@ From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
 
   {% if page < page_count %}
 
-    <a href="/added_recipes/{{ page + 1 }}">&gt;&gt;</a>
+    <a href="/recipes/{{ page + 1 }}">&gt;&gt;</a>
 
   {% endif %}
   

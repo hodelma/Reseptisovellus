@@ -86,7 +86,7 @@ def add_recipe():
 
         all_recipes.add_recipe(title, instructions, type, diets_id, user_id)
         flash("Recipe added successfully!")
-        return redirect("/added_recipes")
+        return redirect("/recipes")
 
     return render_template("add_recipe.html", types=types, diets=diets)
 
@@ -176,7 +176,7 @@ def delete_recipe(recipe_id):
         if "continue" in request.form:
             all_recipes.remove_recipe(recipe_id)
             flash("Recipe removed successfully!")
-            return redirect("/added_recipes")
+            return redirect("/recipes")
 
         if "cancel" in request.form:
             return redirect(f"/recipe/{recipe_id}")
@@ -185,22 +185,22 @@ def delete_recipe(recipe_id):
     return render_template("remove_recipe.html")
 
 
-@app.route("/added_recipes", methods=["GET", "POST"])
-@app.route("/added_recipes/<int:page>", methods=["GET", "POST"])
-def added_recipes(page=0):
+@app.route("/recipes", methods=["GET", "POST"])
+@app.route("/recipes/<int:page>", methods=["GET", "POST"])
+def recipes(page=0):
     page_size = 10
     recipe_count = all_recipes.recipe_count()
     page_count = math.ceil(recipe_count / page_size)
     page_count = max(page_count, 1)
 
     if page < 1:
-        return redirect("/added_recipes/1")
+        return redirect("/recipes/1")
 
     if page > page_count:
-        return redirect(f"/added_recipes/{page_count}")
+        return redirect(f"/recipes/{page_count}")
 
     recipes = all_recipes.get_recipes(page, page_size)
-    return render_template("added_recipes.html", recipes=recipes, page=page, page_count=page_count)
+    return render_template("recipes.html", recipes=recipes, page=page, page_count=page_count)
 
 
 @app.route("/recipe/<int:recipe_id>")
@@ -224,7 +224,7 @@ def show_recipe(recipe_id, page=1):
     recipes = all_recipes.get_recipes(page, page_size)
     average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
 
-    return render_template("added_recipes.html", recipe=recipe, recipes=recipes,
+    return render_template("recipes.html", recipe=recipe, recipes=recipes,
     average_rating=average_rating, ratings_amount=ratings_amount, page=page, page_count=page_count)
 
 @app.route("/register")
@@ -323,7 +323,7 @@ def search(page=1):
 
     if not recipe_query:
         flash("Entry can't be empty")
-        return redirect(f"/added_recipes/{page}")
+        return redirect(f"/recipes/{page}")
 
     search_count = all_recipes.search_count(recipe_query)
     page_count = math.ceil(search_count["count"] / page_size)
@@ -337,7 +337,7 @@ def search(page=1):
         return redirect(f"/search_recipe/{page_count}")
 
 
-    return render_template("added_recipes.html", recipe_query=recipe_query,
+    return render_template("recipes.html", recipe_query=recipe_query,
                            results=results, page=page, page_count=page_count)
 
 
@@ -368,7 +368,7 @@ def add_comment():
         for error in errors:
             flash(error)
 
-        return render_template("added_recipes.html", recipe=recipe, average_rating=average_rating,
+        return render_template("recipes.html", recipe=recipe, average_rating=average_rating,
         ratings_amount=ratings_amount, comment=comment, rating=rating)
 
     user_id = session["user_id"]

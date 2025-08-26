@@ -59,7 +59,8 @@
     
     <p>
       <b><label for="instructions">Write your recipe:</label></b> <br />
-      <textarea name="instructions" id="instructions" rows="10" cols="70" maxlength="4500" required>{{ instructions }}</textarea>
+      <textarea name="instructions" placeholder="Write your recipe's instructions here..."
+      id="instructions" rows="10" cols="70" maxlength="4500" required>{{ instructions }}</textarea>
     </p>
 
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
