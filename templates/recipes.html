@@ -28,7 +28,7 @@ No ratings yet.
 {% endif %}
 
 <p>
-From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a> ({{ recipe.sent_at }})
 </p>
 
 <p>
@@ -139,7 +139,7 @@ id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
 </a>
 
 <p>
-From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a>
+From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a> ({{ recipe.sent_at }})
 </p>
 
 <hr>
@@ -175,7 +175,7 @@ From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a>
 <br>
 <br>
 
-From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a>
+From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a> ({{ recipe.sent_at }})
 
 </div>
 <br>
