@@ -18,13 +18,14 @@
     <br>
 
     {% for t in types %}
+    <div class="form">
 
       <input type="radio" name="type" id="type{{ t.id }}" value="{{ t.id }}" required
       {% if t.id == type %}
       checked
       {% endif %}>
       <label for="type{{ t.id }}">{{ t.title }}</label>
-
+      </div>
       <br>
     {% endfor %}
 
@@ -35,13 +36,14 @@
   <br>
   <br>
   {% for diet in diets %}
+  <div class="form">
 
   <input type="checkbox" name="diet" id="diet{{ diet.id }}" value="{{ diet.id }}"
   {% if diet.id in diets_id %}
   checked
   {% endif %}>
   <label for="diet{{ diet.id }}">{{ diet.title }}</label>
-
+  </div>
   <br>
   {% endfor %}
   
