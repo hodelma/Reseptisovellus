@@ -8,6 +8,7 @@ CREATE TABLE recipes (
     id INTEGER PRIMARY KEY,
     title TEXT,
     instructions TEXT,
+    sent_at TEXT,
     user_id INTEGER REFERENCES users,
     type_id INTEGER REFERENCES types
 );
@@ -26,6 +27,7 @@ CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     recipe_id INTEGER REFERENCES recipes,
+    sent_at TEXT,
     comment_text TEXT,
     rating INTEGER
 );

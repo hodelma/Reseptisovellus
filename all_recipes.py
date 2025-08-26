@@ -19,6 +19,7 @@ def search_count(recipe_query):
 def get_recipes(page, page_size):
     sql = """SELECT recipes.id,
                     recipes.title,
+                    MAX(recipes.sent_at) sent_at,
                     recipes.instructions,
                     types.title type,
                     diets.title diet,
@@ -41,6 +42,7 @@ def get_recipes(page, page_size):
 def get_top_recipes():
     sql = """SELECT recipes.id,
                recipes.title,
+               MAX(recipes.sent_at) sent_at,
                recipes.instructions,
                types.title type,
                users.id user_id,
@@ -75,6 +77,7 @@ def get_recipe(recipe_id):
     sql = """SELECT recipes.id,
                     recipes.title,
                     recipes.instructions,
+                    recipes.sent_at,
                     types.id type_id,
                     types.title type_title,
                     diets.id diet,
@@ -94,9 +97,12 @@ def get_recipe(recipe_id):
 
 
 def get_comment(comment_id):
-    sql = """SELECT comments.id, comments.comment_text,
-                comments.rating, users.id user_id,
-                users.username, comments.recipe_id
+    sql = """SELECT comments.id,
+                    comments.comment_text,
+                    comments.rating,
+                    users.id user_id,
+                    users.username,
+                    comments.recipe_id
             FROM comments
             JOIN users ON comments.user_id = users.id
             WHERE comments.id = ?"""
@@ -105,8 +111,11 @@ def get_comment(comment_id):
 
 
 def get_comments(recipe_id, page, page_size):
-    sql = """SELECT comments.id, comments.comment_text,
-                    comments.rating, comments.user_id,
+    sql = """SELECT comments.id,
+                    comments.comment_text,
+                    comments.sent_at,
+                    comments.rating,
+                    comments.user_id,
                     users.username
             FROM comments
             JOIN users ON comments.user_id = users.id
@@ -119,8 +128,8 @@ def get_comments(recipe_id, page, page_size):
 
 
 def add_recipe(title, instructions, type_id, diets, user_id):
-    sql = """INSERT INTO recipes (title, instructions, type_id, user_id)
-            VALUES (?, ?, ?, ?)"""
+    sql = """INSERT INTO recipes (title, instructions, sent_at, type_id, user_id)
+            VALUES (?, ?, datetime('now', 'localtime'), ?, ?)"""
     db.execute(sql, (title, instructions, type_id, user_id))
 
     recipe_id = db.last_insert_id()
@@ -156,10 +165,15 @@ def remove_recipe(recipe_id):
 
 
 def search_recipe(recipe_query, page, page_size):
-    sql = """SELECT recipes.id, recipes.title, users.username, recipes.user_id
+    sql = """SELECT recipes.id,
+                    recipes.title,
+                    recipes.sent_at,
+                    users.username,
+                    recipes.user_id
             FROM recipes
             JOIN users ON recipes.user_id = users.id
             WHERE recipes.title LIKE ? OR users.username LIKE ?
+            ORDER BY recipes.sent_at DESC
             LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
@@ -167,7 +181,8 @@ def search_recipe(recipe_query, page, page_size):
 
 
 def add_comment(comment, recipe_id, user_id, rating):
-    sql = """INSERT INTO comments (comment_text, recipe_id, user_id, rating) VALUES (?, ?, ?, ?)"""
+    sql = """INSERT INTO comments (comment_text, recipe_id, sent_at, user_id, rating)
+    VALUES (?, ?, datetime('now', 'localtime'), ?, ?)"""
     db.execute(sql, (comment, recipe_id, user_id, rating))
 
 
