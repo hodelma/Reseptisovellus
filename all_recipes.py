@@ -159,11 +159,11 @@ def search_recipe(recipe_query, page, page_size):
     sql = """SELECT recipes.id, recipes.title, users.username, recipes.user_id
             FROM recipes
             JOIN users ON recipes.user_id = users.id
-            WHERE recipes.title LIKE ?
+            WHERE recipes.title LIKE ? OR users.username LIKE ?
             LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
-    return db.query(sql, ["%" + recipe_query + "%", limit, offset])
+    return db.query(sql, ["%" + recipe_query + "%", "%" + recipe_query + "%", limit, offset])
 
 
 def add_comment(comment, recipe_id, user_id, rating):
