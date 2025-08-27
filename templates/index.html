@@ -15,34 +15,26 @@
 <br>
 
 <div class="top5-section">
-{% if top_recipes %}
+<h2>Top 5 Recipes 🏆</h2>
+<br>
 
-    <h2>Top 5 Recipes 🏆</h2>
-    <br>
+{% if top_recipes %}
 
     {% for recipe in top_recipes %}
 
-        {% if recipe.average_rating %}
-            <b><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></b>
-            ({{ recipe.average_rating|round(1) }} ⭐️,
-            {{ recipe.comments_count }} ratings)
+        <b><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></b>
+        ({{ recipe.average_rating|round(1) }} ⭐️,
+        {{ recipe.comments_count }} ratings)
 
-            <p>
-            <small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a> 
-            ({{ recipe.sent_at }})</small>
-            </p>
-
-        {% else %}
-
-        <p>There are no available recipes.</p>
-
-        {% endif %}
+        <p>
+        <small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a>
+        ({{ recipe.sent_at }})</small>
+        </p>
 
     {% endfor %}
 
 {% else %}
 
-    <h2>Top 5 Recipes</h2>
     <p>There are no available recipes.</p>
 
 {% endif %}
