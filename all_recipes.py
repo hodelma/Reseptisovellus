@@ -44,17 +44,14 @@ def get_top_recipes():
             recipes.title,
             users.username,
             users.id user_id,
-            recipes.sent_at,
-            sub.average_rating,
-            sub.comments_count
+            sub.average_rating
         FROM recipes
         JOIN users ON recipes.user_id = users.id
         JOIN (SELECT recipe_id,
-            AVG(rating) average_rating,
-            COUNT(*) comments_count
+            AVG(rating) average_rating
             FROM comments
             GROUP BY recipe_id) sub ON recipes.id = sub.recipe_id
-        ORDER BY sub.average_rating DESC, sub.comments_count DESC
+        ORDER BY sub.average_rating DESC
         LIMIT 5"""
     return db.query(sql)
 
