@@ -7,9 +7,16 @@ def get_user(user_id):
     return result[0] if result else None
 
 
-def get_recipes(user_id):
-    sql = "SELECT id, title, sent_at FROM recipes WHERE user_id = ? ORDER BY sent_at DESC"
-    return db.query(sql, [user_id])
+def get_recipes(user_id, page, page_size):
+    sql = "SELECT id, title, sent_at FROM recipes WHERE user_id = ? ORDER BY sent_at DESC LIMIT ? OFFSET ?"
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [user_id, limit, offset])
+
+
+def recipe_count(user_id):
+    sql = "SELECT COUNT(*) FROM recipes WHERE user_id = ?"
+    return db.query(sql, [user_id])[0][0]
 
 
 def create_user(username, password):

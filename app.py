@@ -88,14 +88,26 @@ def add_recipe():
 
 
 @app.route("/user/<int:user_id>")
-def show_user(user_id):
+@app.route("/user/<int:user_id>/<int:page>")
+def show_user(user_id, page=1):
     user = users.get_user(user_id)
 
     if not user:
         abort(404)
 
-    recipe_list = users.get_recipes(user_id)
-    return render_template("show_user.html", user=user, recipes=recipe_list)
+    page_size = 10
+    recipe_count = users.recipe_count(user_id)
+    page_count = math.ceil(recipe_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/user/{user_id}/1")
+
+    if page > page_count:
+        return redirect(f"/user/{user_id}/{page_count}")
+
+    recipe_list = users.get_recipes(user_id, page, page_size)
+    return render_template("show_user.html", user=user, recipes=recipe_list, page=page, page_size=page_size, page_count=page_count)
 
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])
