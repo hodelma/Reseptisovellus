@@ -166,7 +166,7 @@ def search_recipe(recipe_query, page, page_size):
             FROM recipes
             JOIN users ON recipes.user_id = users.id
             WHERE recipes.title LIKE ? OR users.username LIKE ?
-            ORDER BY recipes.sent_at DESC
+            ORDER BY recipes.id ASC
             LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
