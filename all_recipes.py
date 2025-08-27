@@ -43,6 +43,7 @@ def get_top_recipes():
     sql = """SELECT recipes.id,
             recipes.title,
             users.username,
+            users.id user_id,
             recipes.sent_at,
             sub.average_rating,
             sub.comments_count
