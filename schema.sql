@@ -37,8 +37,10 @@ CREATE TABLE connect_recipe_diets (
     diet_id INTEGER REFERENCES diets
 );
 
-CREATE INDEX idx_recipes_type_id ON recipes(type_id);
-CREATE INDEX idx_recipes_title ON recipes(title);
-CREATE INDEX idx_comments_recipe_id ON comments(recipe_id);
-CREATE INDEX idx_comments_user_id ON comments(user_id);
-CREATE INDEX idx_recipes_user_id ON recipes(user_id);
+CREATE INDEX idx_recipes_sent_at ON recipes(sent_at);
+CREATE INDEX idx_recipes_type ON recipes(type_id);
+CREATE INDEX idx_comments_recipe ON comments(recipe_id);
+CREATE INDEX idx_recipe_diets_recipe ON connect_recipe_diets(recipe_id);
+CREATE INDEX idx_recipes_user ON recipes(user_id);
+CREATE INDEX idx_comments_user ON comments(user_id);
+CREATE INDEX idx_recipe_diets_diet ON connect_recipe_diets(diet_id);

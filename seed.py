@@ -3,7 +3,6 @@ import sqlite3
 
 db = sqlite3.connect("database.db")
 
-
 db.execute("DELETE FROM users")
 db.execute("DELETE FROM recipes")
 db.execute("DELETE FROM comments")
@@ -27,16 +26,16 @@ for i in range(1, USER_COUNT + 1):
 for i in range(1, RECIPE_COUNT + 1):
     user_id = random.randint(1, USER_COUNT)
     type_id = random.randint(1, 8)
-    diet_id = random.randint(1, 8)
-    db.execute("INSERT INTO recipes (title, user_id, type_id, diet_id) VALUES (?, ?, ?, ?)",
-               ["recipe" + str(i), user_id, type_id, diet_id])
+    db.execute("INSERT INTO recipes (title, sent_at, user_id, type_id) VALUES (?, datetime('now'), ?, ?)",
+               ["recipe" + str(i), user_id, type_id])
 
 for i in range(1, COMMENT_COUNT + 1):
     user_id = random.randint(1, USER_COUNT)
     recipe_id = random.randint(1, RECIPE_COUNT)
-    db.execute("""INSERT INTO comments (comment_text, user_id, recipe_id)
-                  VALUES (?, ?, ?)""",
-               ["comment" + str(i), user_id, recipe_id])
+    rating = random.randint(0, 5)
+    db.execute("""INSERT INTO comments (comment_text, user_id, recipe_id, sent_at, rating)
+                  VALUES (?, ?, ?, datetime('now'), ?)""",
+               ["comment" + str(i), user_id, recipe_id, rating])
 
 db.commit()
 db.close()
