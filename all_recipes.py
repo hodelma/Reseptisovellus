@@ -51,6 +51,7 @@ def get_top_recipes():
             FROM recipes
             JOIN users ON recipes.user_id = users.id
             JOIN types ON recipes.type_id = types.id
+            WHERE recipes.average_rating > 0
             ORDER BY recipes.average_rating DESC
             LIMIT 5"""
     return db.query(sql)
