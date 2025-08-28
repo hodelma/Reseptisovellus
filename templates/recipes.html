@@ -103,7 +103,9 @@ id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
 {% else %}
 
 <form action="/search_recipe" method="get">
-  
+
+<h1>Recipe bank</h1>
+<br>
 <p>
 <label for="recipe_query">Search for:</label>
 {% if recipe_query %}
@@ -119,6 +121,7 @@ id="comment" rows="5" cols="70" minlength="10" maxlength="2000" required>
 <input type="submit" value="Search" class="btn">
 
 </p>
+<br>
 
 </form>
 
@@ -160,8 +163,6 @@ From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a> ({{ r
 
 <a href="/" class="btn-menu">Back to menu</a>
 
-<h1>Recipe bank</h1>
-
 {% if recipes %}
 
 {% for recipe in recipes %}
@@ -175,7 +176,7 @@ From user: <a href="/user/{{ result.user_id }}">{{ result.username }} </a> ({{ r
 <br>
 <br>
 
-From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a> ({{ recipe.sent_at }})
+<small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }} </a> ({{ recipe.sent_at }})</small>
 
 </div>
 <br>

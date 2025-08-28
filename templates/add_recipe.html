@@ -9,7 +9,7 @@
   <form action="/add_recipe" method="post">
 
     <p>
-      <b><label for="title">Recipe title:</label></b> <br />
+      <b><label for="title">Recipe title:</label></b> <br /> <br>
     <input type="text" name="title" id="title" size="74" maxlength="100" value="{{ title }}" required />
     </p>
 
@@ -58,7 +58,7 @@
     <br>
     
     <p>
-      <b><label for="instructions">Write your recipe:</label></b> <br />
+      <b><label for="instructions">Write your recipe:</label></b> <br /> <br>
       <textarea name="instructions" placeholder="Write your recipe's instructions here..."
       id="instructions" rows="10" cols="70" maxlength="4500" required>{{ instructions }}</textarea>
     </p>
