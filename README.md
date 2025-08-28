@@ -22,7 +22,7 @@
 - Käyttäjä pystyy antamaan reseptille kommentin ja arvosanan. Reseptistä näytetään kommentit ja keskimääräinen arvosana.
 <br><br>
 ## Sovelluksen asentamisohjeet
-*Varmista, että sinulla on ladattuna python3 etukäteen.*
+*Varmista, että sinulla on ladattuna python3 etukäteen. Sovellus on kehitetty Python 3.12.3 versiolla.*
 <br><br>
 
 1. Kloonaa repositorio
