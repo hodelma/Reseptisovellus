@@ -319,7 +319,7 @@ def search(page=1):
     page_size = 10
 
     if not recipe_query:
-        flash("Entry can't be empty")
+        flash("ERROR: Entry can't be empty!")
         return redirect(f"/recipes/{page}")
 
     search_count = all_recipes.search_count(recipe_query)

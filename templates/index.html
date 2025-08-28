@@ -23,7 +23,7 @@
     {% for recipe in top_recipes %}
 
         <b><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></b>
-        ({{ recipe.average_rating|round(1) }} ⭐️)
+        ({{ recipe.average_rating|round(1) }} ★)
 
         <p>
         <small>From user: <a href="/user/{{ recipe.user_id }}">{{ recipe.username }}</a></small>
