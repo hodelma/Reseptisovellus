@@ -19,6 +19,7 @@ def search_count(recipe_query):
 def get_recipes(page, page_size):
     sql = """SELECT recipes.id,
                     recipes.title,
+                    recipes.average_rating,
                     MAX(recipes.sent_at) sent_at,
                     recipes.instructions,
                     types.title type,
@@ -42,17 +43,16 @@ def get_recipes(page, page_size):
 def get_top_recipes():
     sql = """SELECT recipes.id,
             recipes.title,
-            users.username,
+            recipes.instructions,
+            types.title type,
             users.id user_id,
-            sub.average_rating
-        FROM recipes
-        JOIN users ON recipes.user_id = users.id
-        JOIN (SELECT recipe_id,
-            AVG(rating) average_rating
-            FROM comments
-            GROUP BY recipe_id) sub ON recipes.id = sub.recipe_id
-        ORDER BY sub.average_rating DESC
-        LIMIT 5"""
+            users.username,
+            recipes.average_rating
+            FROM recipes
+            JOIN users ON recipes.user_id = users.id
+            JOIN types ON recipes.type_id = types.id
+            ORDER BY recipes.average_rating DESC
+            LIMIT 5"""
     return db.query(sql)
 
 
@@ -69,6 +69,7 @@ def get_diets():
 def get_recipe(recipe_id):
     sql = """SELECT recipes.id,
                     recipes.title,
+                    recipes.average_rating,
                     recipes.instructions,
                     recipes.sent_at,
                     types.id type_id,
@@ -160,6 +161,7 @@ def remove_recipe(recipe_id):
 def search_recipe(recipe_query, page, page_size):
     sql = """SELECT recipes.id,
                     recipes.title,
+                    recipes.average_rating,
                     recipes.sent_at,
                     users.username,
                     recipes.user_id
@@ -178,15 +180,33 @@ def add_comment(comment, recipe_id, user_id, rating):
     VALUES (?, ?, datetime('now', 'localtime'), ?, ?)"""
     db.execute(sql, (comment, recipe_id, user_id, rating))
 
+    sql = """UPDATE recipes SET average_rating = (SELECT AVG(rating)
+            FROM comments WHERE recipe_id = ?)
+             WHERE id = ?"""
+    db.execute(sql, [recipe_id, recipe_id])
 
-def edit_comment(comment_id, comment, rating):
-    sql = """UPDATE comments SET comment_text = ?, rating = ? WHERE id = ?"""
+
+def edit_comment(comment_id, recipe_id, comment, rating):
+    sql = """UPDATE comments SET comment_text = ?, rating = ? 
+            WHERE id = ?"""
     db.execute(sql, [comment, rating, comment_id])
 
+    sql = """UPDATE recipes SET average_rating = (SELECT AVG(rating)
+            FROM comments
+            WHERE recipe_id = ?)
+            WHERE id = ?"""
+    db.execute(sql, [recipe_id, recipe_id])
 
-def remove_comment(comment_id):
-    sql = """DELETE FROM comments WHERE id = ?"""
+
+def remove_comment(comment_id, recipe_id):
+    sql = "DELETE FROM comments WHERE id = ?"
     db.execute(sql, [comment_id])
+
+    sql = """UPDATE recipes SET average_rating = (SELECT AVG(rating) 
+            FROM comments 
+            WHERE recipe_id = ?)
+            WHERE id = ?"""
+    db.execute(sql, [recipe_id, recipe_id])
 
 
 def rating_data(recipe_id):
