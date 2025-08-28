@@ -26,7 +26,8 @@ for i in range(1, USER_COUNT + 1):
 for i in range(1, RECIPE_COUNT + 1):
     user_id = random.randint(1, USER_COUNT)
     type_id = random.randint(1, 8)
-    db.execute("INSERT INTO recipes (title, sent_at, user_id, type_id) VALUES (?, datetime('now'), ?, ?)",
+    db.execute("""INSERT INTO recipes (title, sent_at, user_id, type_id, average_rating)
+                VALUES (?, datetime('now'), ?, ?, 0)""",
                ["recipe" + str(i), user_id, type_id])
 
 for i in range(1, COMMENT_COUNT + 1):
@@ -34,8 +35,14 @@ for i in range(1, COMMENT_COUNT + 1):
     recipe_id = random.randint(1, RECIPE_COUNT)
     rating = random.randint(0, 5)
     db.execute("""INSERT INTO comments (comment_text, user_id, recipe_id, sent_at, rating)
-                  VALUES (?, ?, ?, datetime('now'), ?)""",
+                VALUES (?, ?, ?, datetime('now'), ?)""",
                ["comment" + str(i), user_id, recipe_id, rating])
+
+
+db.execute("""UPDATE recipes
+            SET average_rating = (SELECT AVG(rating)
+            FROM comments
+            WHERE comments.recipe_id = recipes.id)""")
 
 db.commit()
 db.close()
