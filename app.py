@@ -107,7 +107,8 @@ def show_user(user_id, page=1):
         return redirect(f"/user/{user_id}/{page_count}")
 
     recipe_list = users.get_recipes(user_id, page, page_size)
-    return render_template("show_user.html", user=user, recipes=recipe_list, page=page, page_size=page_size, page_count=page_count)
+    return render_template("show_user.html", user=user, recipes=recipe_list,
+    page=page, page_size=page_size, page_count=page_count)
 
 
 @app.route("/edit_mode/<int:recipe_id>", methods=["GET", "POST"])

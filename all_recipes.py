@@ -187,7 +187,7 @@ def add_comment(comment, recipe_id, user_id, rating):
 
 
 def edit_comment(comment_id, recipe_id, comment, rating):
-    sql = """UPDATE comments SET comment_text = ?, rating = ? 
+    sql = """UPDATE comments SET comment_text = ?, rating = ?
             WHERE id = ?"""
     db.execute(sql, [comment, rating, comment_id])
 
@@ -202,7 +202,7 @@ def remove_comment(comment_id, recipe_id):
     sql = "DELETE FROM comments WHERE id = ?"
     db.execute(sql, [comment_id])
 
-    sql = """UPDATE recipes SET average_rating = (SELECT AVG(rating) 
+    sql = """UPDATE recipes SET average_rating = (SELECT AVG(rating)
             FROM comments 
             WHERE recipe_id = ?)
             WHERE id = ?"""

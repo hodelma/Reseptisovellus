@@ -8,7 +8,11 @@ def get_user(user_id):
 
 
 def get_recipes(user_id, page, page_size):
-    sql = "SELECT id, title, sent_at FROM recipes WHERE user_id = ? ORDER BY sent_at DESC LIMIT ? OFFSET ?"
+    sql = """SELECT id, title, sent_at
+            FROM recipes
+            WHERE user_id = ?
+            ORDER BY sent_at DESC
+            LIMIT ? OFFSET ?"""
     limit = page_size
     offset = page_size * (page - 1)
     return db.query(sql, [user_id, limit, offset])
