@@ -426,7 +426,7 @@ def edit_comment(comment_id):
             flash(error)
             return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
-    all_recipes.edit_comment(comment_id, text, rating)
+    all_recipes.edit_comment(comment_id, recipe_id, text, rating)
     flash("Comment edited successfully")
     return redirect(f"/show_comments/{recipe_id}")
 
@@ -450,7 +450,7 @@ def delete_comment(comment_id):
         check_csrf()
 
         if "continue" in request.form:
-            all_recipes.remove_comment(comment_id)
+            all_recipes.remove_comment(comment_id, recipe_id)
             flash("Comment removed successfully")
 
         return redirect(f"/show_comments/{recipe_id}")
