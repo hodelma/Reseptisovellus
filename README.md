@@ -72,16 +72,28 @@ flask run --debug
 
 Sovellusta on testattu suurella tietomäärällä `seed.py` tiedoston avulla ja se toimii tehokkaasti.
 
-Ajat eri operaatioissa ennen indeksin lisäämistä:
+Testidatan suuruus:
 
-- Reseptien selaaminen sivutuksen avulla (0.0s - 0.01s)
-- Reseptin avaaminen (0.05s - 0.18s)
-- Reseptin kommenttikentän avaaminen (0.09s - 0.20s)
-- Käyttäjäprofiilin avaaminen (0.01s - 0.02s)
-- Reseptin lisääminen (0.01s)
-- Reseptin poistaminen (0.01s)
-- Reseptin muokkaaminen (0.02s)
-- Reseptin hakeminen (0.02s)
+`USER_COUNT = 1000`
+
+`RECIPE_COUNT = 10**5`
+
+`COMMENT_COUNT = 10**6`
+
+<br>
+
+Ajat eri tärkeissä operaatioissa ennen indeksin lisäämistä:
+
+- Etusivun lataaminen (0.04s - 0.05s)
+- Kirjautuminen / rekisteröinti (0.10s-0.15s)
+- Reseptien selaaminen sivutuksen avulla (0.0s - 0.02s)
+- Reseptin avaaminen (0.00s - 0.03s)
+- Reseptin kommenttikentän avaaminen (0.00s - 0.03s)
+- Käyttäjäprofiilin avaaminen ja sivujen selaus (0.01s - 0.03s)
+- Reseptin / kommentin lisääminen (0.01s - 0.02s)
+- Reseptin /kommentin poistaminen (0.00s - 0.02s)
+- Reseptin / kommentin muokkaaminen (0.0s - 0.02s)
+- Reseptin hakeminen (0.00s - 0.02s)
 
 <br>
 
