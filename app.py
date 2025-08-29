@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, session, flash, abo
 import markupsafe
 
 import config
-import all_recipes
+import recipes
 import users
 
 
@@ -35,7 +35,7 @@ def show_lines(recipe_content):
 
 @app.route("/")
 def index():
-    top_recipes = all_recipes.get_top_recipes()
+    top_recipes = recipes.get_top_recipes()
     return render_template("index.html", top_recipes=top_recipes)
 
 
@@ -52,8 +52,8 @@ def add_recipe():
         flash("You need to log in to add a recipe")
         return redirect("/")
 
-    types = all_recipes.get_types()
-    diets = all_recipes.get_diets()
+    types = recipes.get_types()
+    diets = recipes.get_diets()
 
     if request.method == "POST":
         check_csrf()
@@ -80,7 +80,7 @@ def add_recipe():
             type=type_id, types=types, diets=diets, diets_id=diets_id)
 
         user_id = session["user_id"]
-        all_recipes.add_recipe(title, instructions, type_id, diets_id, user_id)
+        recipes.add_recipe(title, instructions, type_id, diets_id, user_id)
         flash("Recipe added successfully!")
         return redirect("/recipes")
 
@@ -116,13 +116,13 @@ def edit_recipe(recipe_id):
     if "user_id" not in session:
         abort(403)
 
-    recipe = all_recipes.get_recipe(recipe_id)
+    recipe = recipes.get_recipe(recipe_id)
 
     if recipe["user_id"] != session["user_id"]:
         abort(403)
 
-    types = all_recipes.get_types()
-    diets = all_recipes.get_diets()
+    types = recipes.get_types()
+    diets = recipes.get_diets()
     type_id = recipe["type_id"]
     diets_id = []
     if recipe["diet_id"]:
@@ -156,7 +156,7 @@ def edit_recipe(recipe_id):
             return render_template("edit_recipe.html", recipe=recipe, title=title,
             instructions=instructions, types=types, diets_id=diets_id, type=type_id, diets=diets)
 
-        all_recipes.edit_recipe(recipe_id, title, instructions, type_id, diets_id)
+        recipes.edit_recipe(recipe_id, title, instructions, type_id, diets_id)
         flash("Recipe edited successfully!")
         return redirect(f"/recipe/{recipe_id}")
 
@@ -168,7 +168,7 @@ def delete_recipe(recipe_id):
     if "user_id" not in session:
         abort(403)
 
-    recipe = all_recipes.get_recipe(recipe_id)
+    recipe = recipes.get_recipe(recipe_id)
 
     if recipe["user_id"] != session["user_id"]:
         abort(403)
@@ -180,7 +180,7 @@ def delete_recipe(recipe_id):
         check_csrf()
 
         if "continue" in request.form:
-            all_recipes.remove_recipe(recipe_id)
+            recipes.remove_recipe(recipe_id)
             flash("Recipe removed successfully!")
             return redirect("/recipes")
 
@@ -191,9 +191,9 @@ def delete_recipe(recipe_id):
 
 @app.route("/recipes", methods=["GET", "POST"])
 @app.route("/recipes/<int:page>", methods=["GET", "POST"])
-def recipes(page=1):
+def show_recipes(page=1):
     page_size = 10
-    recipe_count = all_recipes.recipe_count()
+    recipe_count = recipes.recipe_count()
     page_count = math.ceil(recipe_count / page_size)
     page_count = max(page_count, 1)
 
@@ -203,19 +203,19 @@ def recipes(page=1):
     if page > page_count:
         return redirect(f"/recipes/{page_count}")
 
-    recipe_list = all_recipes.get_recipes(page, page_size)
+    recipe_list = recipes.get_recipes(page, page_size)
     return render_template("recipes.html", recipes=recipe_list, page=page, page_count=page_count)
 
 
 @app.route("/recipe/<int:recipe_id>")
 def show_recipe(recipe_id, page=1):
-    recipe = all_recipes.get_recipe(recipe_id)
+    recipe = recipes.get_recipe(recipe_id)
 
     if not recipe:
         abort(404)
 
     page_size = 10
-    recipe_count = all_recipes.recipe_count()
+    recipe_count = recipes.recipe_count()
     page_count = math.ceil(recipe_count / page_size)
     page_count = max(page_count, 1)
 
@@ -225,8 +225,8 @@ def show_recipe(recipe_id, page=1):
     if page > page_count:
         return redirect(f"/recipe/{recipe_id}/{page_count}")
 
-    recipe_list = all_recipes.get_recipes(page, page_size)
-    average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
+    recipe_list = recipes.get_recipes(page, page_size)
+    average_rating, ratings_amount = recipes.rating_data(recipe_id)
     return render_template("recipes.html", recipe=recipe, recipes=recipe_list,
     average_rating=average_rating, ratings_amount=ratings_amount, page=page, page_count=page_count)
 
@@ -322,10 +322,10 @@ def search(page=1):
         flash("ERROR: Entry can't be empty!")
         return redirect(f"/recipes/{page}")
 
-    search_count = all_recipes.search_count(recipe_query)
+    search_count = recipes.search_count(recipe_query)
     page_count = math.ceil(search_count["count"] / page_size)
     page_count = max(page_count, 1)
-    results = all_recipes.search_recipe(recipe_query, page, page_size)
+    results = recipes.search_recipe(recipe_query, page, page_size)
 
     if page < 1:
         return redirect("/search_recipe/1")
@@ -348,8 +348,8 @@ def add_comment():
     recipe_id = request.form.get("recipe_id")
     rating = int(request.form.get("rating"))
 
-    recipe = all_recipes.get_recipe(recipe_id)
-    average_rating, ratings_amount = all_recipes.rating_data(recipe_id)
+    recipe = recipes.get_recipe(recipe_id)
+    average_rating, ratings_amount = recipes.rating_data(recipe_id)
     errors = []
 
     if not comment or len(comment) > 2000 or len(comment) < 10:
@@ -366,7 +366,7 @@ def add_comment():
         ratings_amount=ratings_amount, comment=comment, rating=rating)
 
     user_id = session["user_id"]
-    all_recipes.add_comment(comment, recipe_id, user_id, rating)
+    recipes.add_comment(comment, recipe_id, user_id, rating)
     flash("Comment added successfully!")
     return redirect(f"/show_comments/{recipe_id}")
 
@@ -374,13 +374,13 @@ def add_comment():
 @app.route("/show_comments/<int:recipe_id>")
 @app.route("/show_comments/<int:recipe_id>/<int:page>")
 def show_comments(recipe_id, page=0):
-    recipe = all_recipes.get_recipe(recipe_id)
+    recipe = recipes.get_recipe(recipe_id)
 
     if not recipe:
         abort(404)
 
     page_size = 10
-    comment_count = all_recipes.comment_count(recipe_id)
+    comment_count = recipes.comment_count(recipe_id)
     page_count = math.ceil(comment_count / page_size)
     page_count = max(page_count, 1)
 
@@ -390,7 +390,7 @@ def show_comments(recipe_id, page=0):
     if page > page_count:
         return redirect(f"/show_comments/{recipe_id}/{page_count}")
 
-    comments = all_recipes.get_comments(recipe_id, page, page_size)
+    comments = recipes.get_comments(recipe_id, page, page_size)
 
     return render_template("show_comments.html", recipe=recipe, comments=comments,
     page=page, page_count=page_count)
@@ -401,7 +401,7 @@ def edit_comment(comment_id):
     if "user_id" not in session:
         abort(403)
 
-    comment = all_recipes.get_comment(comment_id)
+    comment = recipes.get_comment(comment_id)
 
     if comment["user_id"] != session["user_id"]:
         abort(403)
@@ -427,7 +427,7 @@ def edit_comment(comment_id):
             flash(error)
             return render_template("edit_comment.html", comment=comment, recipe_id=recipe_id)
 
-    all_recipes.edit_comment(comment_id, recipe_id, text, rating)
+    recipes.edit_comment(comment_id, recipe_id, text, rating)
     flash("Comment edited successfully!")
     return redirect(f"/show_comments/{recipe_id}")
 
@@ -437,7 +437,7 @@ def delete_comment(comment_id):
     if "user_id" not in session:
         abort(403)
 
-    comment = all_recipes.get_comment(comment_id)
+    comment = recipes.get_comment(comment_id)
 
     if comment["user_id"] != session["user_id"]:
         abort(403)
@@ -451,7 +451,7 @@ def delete_comment(comment_id):
         check_csrf()
 
         if "continue" in request.form:
-            all_recipes.remove_comment(comment_id, recipe_id)
+            recipes.remove_comment(comment_id, recipe_id)
             flash("Comment removed successfully!")
 
         return redirect(f"/show_comments/{recipe_id}")
