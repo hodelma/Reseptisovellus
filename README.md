@@ -1,10 +1,10 @@
 # Reseptisovellus
-<br><br>
+
 ## Tervetuloa käyttämään ruokareseptisovellusta! 🍽
 <br>
 
 **Tässä sovelluksessa tulee olemaan seuraavanlaiset ominaisuudet:**
-<br><br>
+<br>
 - Sovelluksessa käyttäjät pystyvät jakamaan ruokareseptejään. Reseptissä lukee tarvittavat ainekset ja valmistusohje.
 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
